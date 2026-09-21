@@ -1,0 +1,7 @@
+customtkinter
+python-dotenv
+SQLAlchemy
+psycopg2-binary
+reportlab
+openai
+pytest
