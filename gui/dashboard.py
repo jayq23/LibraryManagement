@@ -114,7 +114,7 @@ class Dashboard(ctk.CTkToplevel):
 			widget.destroy()
 
 		title = f"{self.greeting()}, {self.username}" if panel_name == "Dashboard" else panel_name
-		subtitle = "Your library at a glance" if panel_name == "Dashboard" else "Keep your collection moving"
+		subtitle = "Your library at a glance" if panel_name == "Dashboard" else ""
 
 		ctk.CTkLabel(
 			self.page_content, text=title, text_color="#E8EDF0",
