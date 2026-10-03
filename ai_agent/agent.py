@@ -1,122 +1,371 @@
-"""Offline agent orchestration and authorized tool routing."""
+"""Groq Agent Wrapper with Tool / Function Calling support."""
 
-import re
-from datetime import date
-from difflib import get_close_matches
+import json
+import logging
 
-from ai_agent.tools.availability_tool import check_availability
-from ai_agent.tools.book_search_tool import search_books
-from ai_agent.tools.member_status_tool import member_status
-from ai_agent.tools.reservation_tool import reserve_book
-from managers.fine_manager import FineManager
-from managers.report_manager import ReportManager
-from managers.transaction_manager import TransactionManager
-from managers.book_manager import BookManager
-from managers.member_manager import MemberManager
+from groq import BadRequestError, Groq
+
+from config import GROQ_API_KEY
+from ai_agent.prompts import build_system_prompt
+from ai_agent.tools import (
+    add_book_copies,
+    add_member,
+    borrow_book,
+    cancel_reservation,
+    check_library_summary,
+    check_member_status,
+    collect_fine,
+    collect_reservation,
+    get_book_info,
+    get_book_reservations,
+    list_active_members,
+    list_all_active_reservations,
+    list_categories,
+    reserve_book,
+    return_book,
+)
+
+logger = logging.getLogger(__name__)
+
+MAX_TOOL_ROUNDS = 5
+MAX_TOKENS = 1500
+REQUEST_TIMEOUT = 30.0  # seconds
+
+# Map function names to their Python execution handlers
+AVAILABLE_TOOLS = {
+    "get_book_info": get_book_info,
+    "check_member_status": check_member_status,
+    "list_active_members": list_active_members,
+    "check_library_summary": check_library_summary,
+    "get_book_reservations": get_book_reservations,
+    "list_all_active_reservations": list_all_active_reservations,
+    "add_member": add_member,
+    "borrow_book": borrow_book,
+    "reserve_book": reserve_book,
+    "cancel_reservation": cancel_reservation,
+    "collect_reservation": collect_reservation,
+    "add_book_copies": add_book_copies,
+    "return_book": return_book,
+    "collect_fine": collect_fine,
+    "list_categories": list_categories,
+}
+
+# Tool definitions the model can call
+TOOLS_SCHEMA = [
+    {
+        "type": "function",
+        "function": {
+            "name": "get_book_info",
+            "description": "Searches for books by title, author, or ISBN and returns details including shelf location and available copies.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "keyword": {
+                        "type": "string",
+                        "description": "The title, author, or ISBN keyword to search for.",
+                    }
+                },
+                "required": ["keyword"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "check_member_status",
+            "description": "Fetches active loans, reservations, and member details using a member ID.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "member_id": {
+                        "type": "string",
+                        "description": "The member ID (e.g. M001, M005).",
+                    }
+                },
+                "required": ["member_id"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "list_active_members",
+            "description": "Retrieves the list of all active registered members in the library.",
+            "parameters": {"type": "object", "properties": {}},
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "check_library_summary",
+            "description": "Provides overall statistics such as total books, active loans, overdue counts, and total members.",
+            "parameters": {"type": "object", "properties": {}},
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_book_reservations",
+            "description": "Lists which members have an active reservation for a specific book, searched by title or ISBN.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "isbn_or_title": {
+                        "type": "string",
+                        "description": "Title or ISBN of the book.",
+                    }
+                },
+                "required": ["isbn_or_title"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "list_all_active_reservations",
+            "description": "Retrieves the complete list of all active book reservations in the library across all members.",
+            "parameters": {"type": "object", "properties": {}},
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "add_member",
+            "description": "Registers a new library member with a full name and email address. The member ID is generated automatically. Only call after the user confirmed the details.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "The member's full name.",
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "The member's email address.",
+                    },
+                },
+                "required": ["name", "email"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "borrow_book",
+            "description": "Creates a new borrow transaction for a member using their member ID and book ISBN or title. Only call after confirmation.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "member_id": {
+                        "type": "string",
+                        "description": "The borrowing member's ID (e.g. M005).",
+                    },
+                    "isbn_or_title": {
+                        "type": "string",
+                        "description": "Title or ISBN of the book to borrow.",
+                    },
+                },
+                "required": ["member_id", "isbn_or_title"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "reserve_book",
+            "description": "Creates a book reservation for a member using their member ID and the book title/ISBN. Only call after the user confirmed the details.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "member_id": {
+                        "type": "string",
+                        "description": "Member ID reserving the book (e.g. M001).",
+                    },
+                    "isbn_or_title": {
+                        "type": "string",
+                        "description": "Title or ISBN of the book to reserve. Prefer the ISBN when known.",
+                    },
+                },
+                "required": ["member_id", "isbn_or_title"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "cancel_reservation",
+            "description": "Cancels an active book reservation given its numeric reservation ID. Only call after confirmation.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "reservation_id": {
+                        "type": "integer",
+                        "description": "The ID of the reservation to cancel.",
+                    }
+                },
+                "required": ["reservation_id"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "collect_reservation",
+            "description": "Marks an active reservation as collected (the member picked up the book). Needs the numeric reservation ID; find it with get_book_reservations or check_member_status. Only call after the user confirmed.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "reservation_id": {
+                        "type": "integer",
+                        "description": "The reservation number, e.g. 12 for Res #12.",
+                    }
+                },
+                "required": ["reservation_id"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "add_book_copies",
+            "description": "Restocks and adds inventory copies to a book catalog entry using its title or ISBN. Only call after confirmation.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "isbn_or_title": {
+                        "type": "string",
+                        "description": "The book title or ISBN.",
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "description": "The number of copies to add.",
+                    },
+                },
+                "required": ["isbn_or_title", "quantity"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "return_book",
+            "description": "Processes the return of a borrowed book using the active loan ID. Only call after confirmation.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "loan_id": {
+                        "type": "integer",
+                        "description": "The loan transaction ID.",
+                    }
+                },
+                "required": ["loan_id"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "collect_fine",
+            "description": "Collects fine payment for a member using their member ID and payment amount. Only call after confirmation.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "member_id": {
+                        "type": "string",
+                        "description": "The member ID (e.g. M001).",
+                    },
+                    "amount": {
+                        "type": "number",
+                        "description": "The amount paid in PHP (₱).",
+                    },
+                },
+                "required": ["member_id", "amount"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "list_categories",
+            "description": "Lists all book categories available in the library.",
+            "parameters": {"type": "object", "properties": {}},
+        },
+    },
+]
 
 
-class LibraryAgent:
-	"""Deterministic offline agent restricted to approved library operations."""
+class GroqAgent:
+    def __init__(self, model: str = "openai/gpt-oss-120b"):
+        key = GROQ_API_KEY
+        if not key or key == "your_groq_api_key_here":
+            raise ValueError("Groq API key is missing. Please set GROQ_API_KEY in your .env file.")
 
-	def answer(self, prompt: str) -> str:
-		clean_prompt = prompt.strip()
-		lower_prompt = clean_prompt.lower()
-		words = lower_prompt.split()
-		for index, word in enumerate(words):
-			match = get_close_matches(word, ("how", "many", "members", "customers", "status", "name", "about"), n=1, cutoff=0.82)
-			if match:
-				words[index] = match[0]
-		lower_prompt = " ".join(words)
-		parts = clean_prompt.split(maxsplit=1)
-		command = parts[0].lower() if parts else ""
-		argument = parts[1].strip() if len(parts) > 1 else ""
-		if command in {"add", "register", "create"} and "member" in lower_prompt:
-			match = re.match(r"(?:add|register|create) member\s+(M\d{3,})\s+(.+?)\s+([\w.+-]+@[\w.-]+)$", clean_prompt, re.IGNORECASE)
-			if not match:
-				return "Use: add member MEMBER_ID FULL NAME EMAIL"
-			member_id, name, email = match.groups()
-			MemberManager().add_member(member_id.upper(), name.strip(), email)
-			return f"Member {member_id.upper()} ({name.strip()}) added."
-		if command in {"accept", "collect", "claim"} and "reservation" in lower_prompt:
-			reservation_id = re.search(r"\b\d+\b", argument)
-			if not reservation_id:
-				return "Use: accept reservation RESERVATION_ID"
-			TransactionManager().collect_reservation(int(reservation_id.group()))
-			return f"Reservation #{reservation_id.group()} marked as collected."
-		if command in {"return", "returned"}:
-			loan_id = re.search(r"\b\d+\b", argument)
-			if not loan_id:
-				return "Use: return LOAN_ID"
-			TransactionManager().return_book(int(loan_id.group()))
-			return f"Loan #{loan_id.group()} returned."
-		if command in {"pay", "paid"} and "fine" in lower_prompt:
-			fine_id = re.search(r"\b\d+\b", argument)
-			if not fine_id:
-				return "Use: pay fine FINE_ID"
-			FineManager().pay(int(fine_id.group()))
-			return f"Fine #{fine_id.group()} marked as paid."
-		if command in {"restock", "addcopies", "add-copies"}:
-			match = re.match(r"(?:restock|addcopies|add-copies)\s+(\d+)\s+(.+)", clean_prompt, re.IGNORECASE)
-			if not match:
-				return "Use: restock QUANTITY BOOK_TITLE"
-			quantity, book_query = match.groups()
-			books = BookManager().search(book_query)
-			if not books:
-				return "Book not found."
-			BookManager().add_copies(books[0]["isbn"], int(quantity))
-			return f"Added {quantity} cop(y/ies) to {books[0]['title']}."
+        self.client = Groq(api_key=key, timeout=REQUEST_TIMEOUT, max_retries=2)
+        self.model = model
 
-		if command in {"help", "hello", "hi"}:
-			return "Offline commands: search books, availability, member status, unpaid fines, library totals, active loans, reservations, borrow, and reserve."
-		if any(phrase in lower_prompt for phrase in ("unpaid fine", "unpaid fines", "who owes", "overdue fine")):
-			fines = FineManager().list_unpaid()
-			return "\n".join(f"{fine['name']}: ${fine['amount']} ({fine['reason']})" for fine in fines) or "There are no unpaid fines."
-		if any(phrase in lower_prompt for phrase in ("how many members", "how many customers", "library totals", "system totals")):
-			summary = ReportManager().summary()
-			return f"The library has {summary['members']} active members, {summary['total_books']} books, {summary['active_loans']} active loans, and {summary['overdue']} overdue loans."
-		if any(phrase in lower_prompt for phrase in ("active loans", "current loans", "who borrowed")):
-			loans = TransactionManager().active_loans()
-			return "\n".join(f"{loan['name']} has {loan['title']} (due {loan['due_date']})." for loan in loans) or "There are no active loans."
-		if any(phrase in lower_prompt for phrase in ("reservations", "reserved books", "who reserved")):
-			reservations = TransactionManager().list_reservations("active")
-			return "\n".join(f"{reservation['name']} reserved {reservation['title']}." for reservation in reservations) or "There are no active reservations."
-		if lower_prompt.startswith(("is ", "how many copies", "check availability")):
-			isbn = re.search(r"\b\d{10,13}\b", clean_prompt)
-			if isbn:
-				return f"{isbn.group()}: {check_availability(isbn.group())} copies available."
-		member_id = re.search(r"\bM\d{3,}\b", clean_prompt, re.IGNORECASE)
-		if member_id and ("member" in lower_prompt or "status" in lower_prompt or "loan" in lower_prompt or "fine" in lower_prompt or "about" in lower_prompt or "name" in lower_prompt):
-			data = member_status(member_id.group().upper())
-			if any(phrase in lower_prompt for phrase in ("what is the name", "what's the name", "who is", "how about")):
-				return f"{member_id.group().upper()} is {data['member']['name']}."
-			return f"{data['member']['name']} has {len(data['loans'])} active loan(s) and {len(data['fines'])} unpaid fine(s)."
-		if command in {"search", "find"}:
-			query = re.sub(r"^(for|books?)\s+", "", argument, flags=re.IGNORECASE)
-			books = search_books(query)
-			return "\n".join(f"{book['title']} by {book['author']} ({book['isbn']}) - {book['available_copies']} available" for book in books) or "No matching books found."
-		if command in {"borrow", "checkout", "check-out"}:
-			parts = argument.split()
-			if len(parts) < 2:
-				return "Use: borrow MEMBER_ID ISBN [YYYY-MM-DD]"
-			member_id, isbn = parts[:2]
-			due_date = date.fromisoformat(parts[2]) if len(parts) > 2 else None
-			return f"Checkout #{TransactionManager().borrow(member_id.upper(), isbn, due_date)} recorded."
-		if command in {"availability", "available"}:
-			return f"{argument}: {check_availability(argument)} copies available."
-		if command in {"status", "member"}:
-			data = member_status(argument)
-			return f"{data['member']['name']} has {len(data['loans'])} active loan(s) and {len(data['fines'])} unpaid fine(s)."
-		if command == "reserve":
-			reserve_parts = argument.split(maxsplit=1)
-			if len(reserve_parts) != 2:
-				return "Use: reserve MEMBER_ID BOOK_TITLE_OR_ISBN"
-			member_id, book_query = reserve_parts
-			if book_query.isdigit():
-				isbn = book_query
-			else:
-				books = BookManager().search(book_query)
-				if not books:
-					return "Book not found."
-				isbn = books[0]["isbn"]
-			return f"Reservation #{reserve_book(member_id.upper(), isbn)} created."
-		return "I did not recognize that. Type help to see available commands."
+    def _create(self, messages: list[dict]):
+        """Calls the model. Retries once if Groq rejects a malformed tool call."""
+        for attempt in range(2):
+            try:
+                return self.client.chat.completions.create(
+                    model=self.model,
+                    messages=messages,
+                    tools=TOOLS_SCHEMA,
+                    tool_choice="auto",
+                    max_tokens=MAX_TOKENS,
+                )
+            except BadRequestError as error:
+                if "tool_use_failed" in str(error) and attempt == 0:
+                    logger.warning("Model produced a bad tool call, retrying once.")
+                    continue
+                raise
+
+    @staticmethod
+    def _run_tool(call) -> str:
+        """Runs one tool call. Errors are returned to the model instead of crashing the reply."""
+        handler = AVAILABLE_TOOLS.get(call.function.name)
+        if handler is None:
+            return f"Error: unknown tool '{call.function.name}'."
+        try:
+            args = json.loads(call.function.arguments or "{}")
+            return str(handler(**args))
+        except Exception as error:
+            logger.warning("Tool %s failed: %s", call.function.name, error)
+            return f"Error running tool: {error}"
+
+    def generate_response(self, messages: list[dict]) -> str:
+        """Returns the assistant reply. Raises on API failure; the caller handles it."""
+        full_messages = [{"role": "system", "content": build_system_prompt()}] + messages
+
+        for _ in range(MAX_TOOL_ROUNDS):
+            response = self._create(full_messages)
+            message = response.choices[0].message
+
+            if not message.tool_calls:
+                return message.content or "No response generated."
+
+            full_messages.append({
+                "role": "assistant",
+                "content": message.content or "",
+                "tool_calls": [
+                    {
+                        "id": call.id,
+                        "type": "function",
+                        "function": {
+                            "name": call.function.name,
+                            "arguments": call.function.arguments,
+                        },
+                    }
+                    for call in message.tool_calls
+                ],
+            })
+
+            for call in message.tool_calls:
+                full_messages.append({
+                    "role": "tool",
+                    "tool_call_id": call.id,
+                    "name": call.function.name,
+                    "content": self._run_tool(call),
+                })
+
+        return "Sorry, I couldn't complete that request. Please try rephrasing it."
