@@ -4,6 +4,10 @@
 <dict>
 	<key>files</key>
 	<dict>
+		<key>Resources/.env</key>
+		<data>
+		Z6PApdLAX079bFirchr2WCj3UNA=
+		</data>
 		<key>Resources/LibraryManagement.icns</key>
 		<data>
 		GfYmll6h+NWpce6w0Py57iqOtbw=
@@ -796,13 +800,97 @@
 		<data>
 		zAGuoMKnOpADxXaQdY1gis2tTTE=
 		</data>
+		<key>Resources/ai_agent/__init__.py</key>
+		<data>
+		ue3bWGnYdjrqTZx0gm8TFddXjp4=
+		</data>
+		<key>Resources/ai_agent/agent.py</key>
+		<data>
+		FZnFLh/PVuvp/vFzlmM+Yq2qWig=
+		</data>
+		<key>Resources/ai_agent/chatbot.py</key>
+		<data>
+		Omwq5m4Pw/KsIBYkLxWi3Jx8QRA=
+		</data>
+		<key>Resources/ai_agent/prompts.py</key>
+		<data>
+		zQ6RUEm1e6FdUaAhLdfmYkxNljg=
+		</data>
+		<key>Resources/ai_agent/tools.py</key>
+		<data>
+		yxl0Bn3yIGFA3IaqsdLRo53uCK0=
+		</data>
+		<key>Resources/assets/.gitkeep</key>
+		<data>
+		2jmj7l5rSw0yVb/vlWAYkK/YBwk=
+		</data>
+		<key>Resources/assets/LibraryManagement.icns</key>
+		<data>
+		GfYmll6h+NWpce6w0Py57iqOtbw=
+		</data>
+		<key>Resources/assets/LibraryManagement.iconset/icon_128x128.png</key>
+		<data>
+		6el4qw047QingNQJm4wuO0MHHQw=
+		</data>
+		<key>Resources/assets/LibraryManagement.iconset/icon_128x128@2x.png</key>
+		<data>
+		hCZGdS1GAjefANa718Dkrjryl48=
+		</data>
+		<key>Resources/assets/LibraryManagement.iconset/icon_16x16.png</key>
+		<data>
+		TUK4YT2roxb/bdJuEypWO8oj9PE=
+		</data>
+		<key>Resources/assets/LibraryManagement.iconset/icon_16x16@2x.png</key>
+		<data>
+		RYWprGYVY88O8/vz9oKLCakfqQg=
+		</data>
+		<key>Resources/assets/LibraryManagement.iconset/icon_256x256.png</key>
+		<data>
+		hCZGdS1GAjefANa718Dkrjryl48=
+		</data>
+		<key>Resources/assets/LibraryManagement.iconset/icon_256x256@2x.png</key>
+		<data>
+		YQyJsyGOpwLgw7qYrEFKeyatSVA=
+		</data>
+		<key>Resources/assets/LibraryManagement.iconset/icon_32x32.png</key>
+		<data>
+		RYWprGYVY88O8/vz9oKLCakfqQg=
+		</data>
+		<key>Resources/assets/LibraryManagement.iconset/icon_32x32@2x.png</key>
+		<data>
+		wvNNHYHISjeUwIOdTm+E/Eqm2Vo=
+		</data>
+		<key>Resources/assets/LibraryManagement.iconset/icon_512x512.png</key>
+		<data>
+		YQyJsyGOpwLgw7qYrEFKeyatSVA=
+		</data>
+		<key>Resources/assets/LibraryManagement.iconset/icon_512x512@2x.png</key>
+		<data>
+		Tq66D1f7E5IhHWribDDr+vIX+M4=
+		</data>
+		<key>Resources/assets/icons/.gitkeep</key>
+		<data>
+		2jmj7l5rSw0yVb/vlWAYkK/YBwk=
+		</data>
 		<key>Resources/assets/logo.png</key>
 		<data>
 		YQyJsyGOpwLgw7qYrEFKeyatSVA=
 		</data>
+		<key>Resources/assets/logo.svg</key>
+		<data>
+		FdQ+VSZXoywXD5dvdpes+M/KPXE=
+		</data>
 		<key>Resources/base_library.zip</key>
 		<data>
-		9AG/lLEIXSIx+99HnvNFUIjbkgc=
+		Oj0O6xnlF7BtGUwoRME3ZZ0FQLI=
+		</data>
+		<key>Resources/certifi/cacert.pem</key>
+		<data>
+		kRAVi6kRiCZnRg+MgfvXUQNT39c=
+		</data>
+		<key>Resources/certifi/py.typed</key>
+		<data>
+		2jmj7l5rSw0yVb/vlWAYkK/YBwk=
 		</data>
 		<key>Resources/customtkinter/assets/fonts/CustomTkinter_shapes_font.otf</key>
 		<data>
@@ -836,6 +924,178 @@
 		<data>
 		CKIxDej0omvCorbBQAJriY1OVSw=
 		</data>
+		<key>Resources/database/__init__.py</key>
+		<data>
+		b5fwaJgykooTnHtzlI9fwIEfbzw=
+		</data>
+		<key>Resources/database/db_manager.py</key>
+		<data>
+		UQErGVDFP/1aGnTAOQcW+2f6TAk=
+		</data>
+		<key>Resources/database/db_setup.py</key>
+		<data>
+		YZNyrlHYVUD+4/MTtokm/0Yv9Ck=
+		</data>
+		<key>Resources/database/seed_data.py</key>
+		<data>
+		c/MgKkGXz4Zvf08nqcdgNpz88Rk=
+		</data>
+		<key>Resources/gui/__init__.py</key>
+		<data>
+		PBBEu6mQD7cCcaFucsTiEnklX8o=
+		</data>
+		<key>Resources/gui/book_catalog_view.py</key>
+		<data>
+		I2KON+gMYRegAs0kuplwfSeKe2k=
+		</data>
+		<key>Resources/gui/borrow_return_view.py</key>
+		<data>
+		LXPsY31JX6ErbYpDyqJqzPngn84=
+		</data>
+		<key>Resources/gui/category_view.py</key>
+		<data>
+		Sjz0luA4gSOCUtbxfojQ7t0/jKo=
+		</data>
+		<key>Resources/gui/chatbot_window.py</key>
+		<data>
+		K4xe8xgIPQnriiGefp9U5TAn6G0=
+		</data>
+		<key>Resources/gui/dashboard.py</key>
+		<data>
+		vHWyzbsa9o2Xl6X1c4zgDsoDEdk=
+		</data>
+		<key>Resources/gui/login_window.py</key>
+		<data>
+		5qgIBWAQbdT1bTwWIwOVwvjhPMA=
+		</data>
+		<key>Resources/gui/member_view.py</key>
+		<data>
+		J2Ul/hq26cxNzuyP8yDCGWiGJO0=
+		</data>
+		<key>Resources/gui/reports_view.py</key>
+		<data>
+		hgDJngUnJpc8oZywfgKFZMiBA8c=
+		</data>
+		<key>Resources/gui/reservation_view.py</key>
+		<data>
+		7N9S+Ne8UbsFBFhVxWNn13nSUBg=
+		</data>
+		<key>Resources/managers/__init__.py</key>
+		<data>
+		NMVu/DFj9WYKpFUO+c2R5BzcZww=
+		</data>
+		<key>Resources/managers/auth_manager.py</key>
+		<data>
+		BRU5E2kDB4K5+jldWvkK+acX2u4=
+		</data>
+		<key>Resources/managers/book_manager.py</key>
+		<data>
+		4VYstR9uMsNQoEn8JtyriGJuVHo=
+		</data>
+		<key>Resources/managers/category_manager.py</key>
+		<data>
+		Ncsbpg1WvnKwwpvzAdsLI52PajE=
+		</data>
+		<key>Resources/managers/fine_manager.py</key>
+		<data>
+		p7YLcBw0+YMFskvSKiXnD5rVCos=
+		</data>
+		<key>Resources/managers/member_manager.py</key>
+		<data>
+		SwBEaPZYcSVZlUMNYzaMhwK+tSs=
+		</data>
+		<key>Resources/managers/report_manager.py</key>
+		<data>
+		rDSdrrMPj5Q/puQxpebd6o4JJ5E=
+		</data>
+		<key>Resources/managers/search_manager.py</key>
+		<data>
+		+Cl/Rj+fSLaWGPdvJ0+K1moZVvk=
+		</data>
+		<key>Resources/managers/transaction_manager.py</key>
+		<data>
+		IcHNq8UuXlMv7p8TyxOOlBodc5Q=
+		</data>
+		<key>Resources/models/__init__.py</key>
+		<data>
+		LcuntRjAQO0SQ+lTKWvP+7I5uHw=
+		</data>
+		<key>Resources/models/book.py</key>
+		<data>
+		rm+XK6ZqGtoxGLsLQzsCytNyxWY=
+		</data>
+		<key>Resources/models/borrow_transaction.py</key>
+		<data>
+		UT4eaLoCK3ohqmenMQcpCAanAfU=
+		</data>
+		<key>Resources/models/fine.py</key>
+		<data>
+		gHFWw+osh0O04AXZpgWfoR3Q0Bs=
+		</data>
+		<key>Resources/models/invoice.py</key>
+		<data>
+		zPjY+yl1Y9j2ySpJNVKKDyZu9J8=
+		</data>
+		<key>Resources/models/member.py</key>
+		<data>
+		cKR/G5RI8kVck8Kk5O1Fl2PVN2k=
+		</data>
+		<key>Resources/models/user.py</key>
+		<data>
+		8S5tZnXPkoYXwknONnW0jDLox0g=
+		</data>
+		<key>Resources/pydantic-2.13.5.dist-info/INSTALLER</key>
+		<data>
+		16AxQdXWseiLa1nvCLZoHfISxZk=
+		</data>
+		<key>Resources/pydantic-2.13.5.dist-info/METADATA</key>
+		<data>
+		3CxCHPFe1h6VmVaReBDEuVMbNbE=
+		</data>
+		<key>Resources/pydantic-2.13.5.dist-info/RECORD</key>
+		<data>
+		4x4lZ8yAz7A6UpxQDgZXbjWnF/A=
+		</data>
+		<key>Resources/pydantic-2.13.5.dist-info/WHEEL</key>
+		<data>
+		CxUej2Bnxqf/DmrsltJA0uTMaCk=
+		</data>
+		<key>Resources/pydantic-2.13.5.dist-info/licenses/LICENSE</key>
+		<data>
+		y39czT2O9Ruf4ZGB0qyAHMWSMaQ=
+		</data>
+		<key>Resources/setuptools/_vendor/importlib_metadata-8.7.1.dist-info/INSTALLER</key>
+		<data>
+		rV3TPfqBqRUXGC9FOHnMBWqfEjA=
+		</data>
+		<key>Resources/setuptools/_vendor/importlib_metadata-8.7.1.dist-info/METADATA</key>
+		<data>
+		HflQlohwzrimwMDwAiNnJ8R5DJA=
+		</data>
+		<key>Resources/setuptools/_vendor/importlib_metadata-8.7.1.dist-info/RECORD</key>
+		<data>
+		9Ra2PfdbOFK7xysPj9YpJIyjE9c=
+		</data>
+		<key>Resources/setuptools/_vendor/importlib_metadata-8.7.1.dist-info/REQUESTED</key>
+		<data>
+		2jmj7l5rSw0yVb/vlWAYkK/YBwk=
+		</data>
+		<key>Resources/setuptools/_vendor/importlib_metadata-8.7.1.dist-info/WHEEL</key>
+		<data>
+		5yJNqX7e37nQI5z3yt526+OZd0M=
+		</data>
+		<key>Resources/setuptools/_vendor/importlib_metadata-8.7.1.dist-info/licenses/LICENSE</key>
+		<data>
+		B9IxkQjSshu9R4ot7app4fZv9JQ=
+		</data>
+		<key>Resources/setuptools/_vendor/importlib_metadata-8.7.1.dist-info/top_level.txt</key>
+		<data>
+		TmH5Jk3nR4O1kkJJvP4bBvF4ua0=
+		</data>
+		<key>Resources/setuptools/_vendor/jaraco/text/Lorem ipsum.txt</key>
+		<data>
+		eDY2ciZNnNP3LVwdNmXhZXsaUHE=
+		</data>
 		<key>Resources/tcl9/9.0/http-2.10.2.tm</key>
 		<data>
 		xUWAEr89pFr8FblP7MAgy5zXchY=
@@ -856,9 +1116,30 @@
 		<data>
 		bdyhBlN+GlotkWBBNxRQk64xc30=
 		</data>
+		<key>Resources/utils/__init__.py</key>
+		<data>
+		1HOTl50QzoMVWgIihSqrJa15qEk=
+		</data>
+		<key>Resources/utils/helpers.py</key>
+		<data>
+		fao7ZfFKziMvoEWiUTtUJyosGas=
+		</data>
+		<key>Resources/utils/receipt_modal.py</key>
+		<data>
+		HnNo0pNp/Q9oY3EiSeAeI1BQETc=
+		</data>
+		<key>Resources/utils/validators.py</key>
+		<data>
+		8i37sWUx45pW5jfI1o4y6WWI0XM=
+		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
+		<key>Frameworks/.env</key>
+		<dict>
+			<key>symlink</key>
+			<string>../Resources/.env</string>
+		</dict>
 		<key>Frameworks/PIL/.dylibs</key>
 		<dict>
 			<key>symlink</key>
@@ -881,6 +1162,42 @@
 			</data>
 			<key>requirement</key>
 			<string>cdhash H"ed31f3183a18c16df5b79331bc2a992bb203eaaa"</string>
+		</dict>
+		<key>Frameworks/PIL/__dot__dylibs/libbrotlicommon.1.2.0.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			1WKPLNfIyrLYws4kfFW+ZxsiXB0=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"d5628f2cd7c8cab2d8c2ce247c55be671b225c1d"</string>
+		</dict>
+		<key>Frameworks/PIL/__dot__dylibs/libbrotlidec.1.2.0.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			bNi9iyi0HOYUAnTem9fON4Pjuqs=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"6cd8bd8b28b41ce6140274de9bd7ce3783e3baab"</string>
+		</dict>
+		<key>Frameworks/PIL/__dot__dylibs/libfreetype.6.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			QviG8wSxxO7A1+1yYlSJci+dByg=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"42f886f304b1c4eec0d7ed72625489722f9d0728"</string>
+		</dict>
+		<key>Frameworks/PIL/__dot__dylibs/libharfbuzz.0.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			RQQjQ1iTYb2uWa9G8UUmRtauZTU=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"45042343589361bdae59af46f1452646d6ae6535"</string>
 		</dict>
 		<key>Frameworks/PIL/__dot__dylibs/libjpeg.62.4.0.dylib</key>
 		<dict>
@@ -917,6 +1234,15 @@
 			</data>
 			<key>requirement</key>
 			<string>cdhash H"4cc2ae65ad661c9b1e6882b730ff8a6e4c15770f"</string>
+		</dict>
+		<key>Frameworks/PIL/__dot__dylibs/libpng16.16.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			iBz1+JytdGY7rRYpqFKjgj72XgE=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"881cf5f89cad74663bad1629a852a3823ef65e01"</string>
 		</dict>
 		<key>Frameworks/PIL/__dot__dylibs/libsharpyuv.0.dylib</key>
 		<dict>
@@ -1008,6 +1334,15 @@
 			<key>requirement</key>
 			<string>cdhash H"ba3973ec2dec7eea8497372fe120eb83c48a129e"</string>
 		</dict>
+		<key>Frameworks/PIL/_imagingft.cpython-314-darwin.so</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			cmPa5suB77wSSz0zzO1QOgUe49A=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"7263dae6cb81efbc124b3d33cced503a051ee3d0"</string>
+		</dict>
 		<key>Frameworks/PIL/_imagingmath.cpython-314-darwin.so</key>
 		<dict>
 			<key>cdhash</key>
@@ -1077,6 +1412,11 @@
 			<key>symlink</key>
 			<string>../Resources/_tk_data</string>
 		</dict>
+		<key>Frameworks/ai_agent</key>
+		<dict>
+			<key>symlink</key>
+			<string>../Resources/ai_agent</string>
+		</dict>
 		<key>Frameworks/assets</key>
 		<dict>
 			<key>symlink</key>
@@ -1087,10 +1427,34 @@
 			<key>symlink</key>
 			<string>../Resources/base_library.zip</string>
 		</dict>
+		<key>Frameworks/certifi</key>
+		<dict>
+			<key>symlink</key>
+			<string>../Resources/certifi</string>
+		</dict>
 		<key>Frameworks/customtkinter</key>
 		<dict>
 			<key>symlink</key>
 			<string>../Resources/customtkinter</string>
+		</dict>
+		<key>Frameworks/database</key>
+		<dict>
+			<key>symlink</key>
+			<string>../Resources/database</string>
+		</dict>
+		<key>Frameworks/greenlet/_greenlet.cpython-314-darwin.so</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			b1SINQeabMd2m/aKbe5ZduTwZ+c=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"6f548835079a6cc7769bf68a6dee5976e4f067e7"</string>
+		</dict>
+		<key>Frameworks/gui</key>
+		<dict>
+			<key>symlink</key>
+			<string>../Resources/gui</string>
 		</dict>
 		<key>Frameworks/libXau.6.dylib</key>
 		<dict>
@@ -1102,24 +1466,75 @@
 			<key>symlink</key>
 			<string>PIL/.dylibs/libavif.16.4.2.dylib</string>
 		</dict>
+		<key>Frameworks/libbrotlicommon.1.2.0.dylib</key>
+		<dict>
+			<key>symlink</key>
+			<string>PIL/.dylibs/libbrotlicommon.1.2.0.dylib</string>
+		</dict>
+		<key>Frameworks/libbrotlidec.1.2.0.dylib</key>
+		<dict>
+			<key>symlink</key>
+			<string>PIL/.dylibs/libbrotlidec.1.2.0.dylib</string>
+		</dict>
+		<key>Frameworks/libcom_err.3.0.dylib</key>
+		<dict>
+			<key>symlink</key>
+			<string>psycopg2/.dylibs/libcom_err.3.0.dylib</string>
+		</dict>
 		<key>Frameworks/libcrypto.3.dylib</key>
 		<dict>
-			<key>cdhash</key>
-			<data>
-			/mzvr1QThKlVdvl6id8uPgm14co=
-			</data>
-			<key>requirement</key>
-			<string>cdhash H"fe6cefaf541384a95576f97a89df2e3e09b5e1ca"</string>
+			<key>symlink</key>
+			<string>psycopg2/.dylibs/libcrypto.3.dylib</string>
+		</dict>
+		<key>Frameworks/libfreetype.6.dylib</key>
+		<dict>
+			<key>symlink</key>
+			<string>PIL/.dylibs/libfreetype.6.dylib</string>
+		</dict>
+		<key>Frameworks/libgssapi_krb5.2.2.dylib</key>
+		<dict>
+			<key>symlink</key>
+			<string>psycopg2/.dylibs/libgssapi_krb5.2.2.dylib</string>
+		</dict>
+		<key>Frameworks/libharfbuzz.0.dylib</key>
+		<dict>
+			<key>symlink</key>
+			<string>PIL/.dylibs/libharfbuzz.0.dylib</string>
 		</dict>
 		<key>Frameworks/libjpeg.62.4.0.dylib</key>
 		<dict>
 			<key>symlink</key>
 			<string>PIL/.dylibs/libjpeg.62.4.0.dylib</string>
 		</dict>
+		<key>Frameworks/libk5crypto.3.1.dylib</key>
+		<dict>
+			<key>symlink</key>
+			<string>psycopg2/.dylibs/libk5crypto.3.1.dylib</string>
+		</dict>
+		<key>Frameworks/libkrb5.3.3.dylib</key>
+		<dict>
+			<key>symlink</key>
+			<string>psycopg2/.dylibs/libkrb5.3.3.dylib</string>
+		</dict>
+		<key>Frameworks/libkrb5support.1.1.dylib</key>
+		<dict>
+			<key>symlink</key>
+			<string>psycopg2/.dylibs/libkrb5support.1.1.dylib</string>
+		</dict>
+		<key>Frameworks/liblber.2.dylib</key>
+		<dict>
+			<key>symlink</key>
+			<string>psycopg2/.dylibs/liblber.2.dylib</string>
+		</dict>
 		<key>Frameworks/liblcms2.2.dylib</key>
 		<dict>
 			<key>symlink</key>
 			<string>PIL/.dylibs/liblcms2.2.dylib</string>
+		</dict>
+		<key>Frameworks/libldap.2.dylib</key>
+		<dict>
+			<key>symlink</key>
+			<string>psycopg2/.dylibs/libldap.2.dylib</string>
 		</dict>
 		<key>Frameworks/liblzma.5.dylib</key>
 		<dict>
@@ -1131,6 +1546,16 @@
 			<key>symlink</key>
 			<string>PIL/.dylibs/libopenjp2.2.5.4.dylib</string>
 		</dict>
+		<key>Frameworks/libpng16.16.dylib</key>
+		<dict>
+			<key>symlink</key>
+			<string>PIL/.dylibs/libpng16.16.dylib</string>
+		</dict>
+		<key>Frameworks/libpq.5.dylib</key>
+		<dict>
+			<key>symlink</key>
+			<string>psycopg2/.dylibs/libpq.5.dylib</string>
+		</dict>
 		<key>Frameworks/libsharpyuv.0.dylib</key>
 		<dict>
 			<key>symlink</key>
@@ -1138,12 +1563,8 @@
 		</dict>
 		<key>Frameworks/libssl.3.dylib</key>
 		<dict>
-			<key>cdhash</key>
-			<data>
-			Yv1Rn47xzJhGgaryhtwcWpy9hYo=
-			</data>
-			<key>requirement</key>
-			<string>cdhash H"62fd519f8ef1cc984681aaf286dc1c5a9cbd858a"</string>
+			<key>symlink</key>
+			<string>psycopg2/.dylibs/libssl.3.dylib</string>
 		</dict>
 		<key>Frameworks/libtiff.6.dylib</key>
 		<dict>
@@ -1183,6 +1604,134 @@
 			</data>
 			<key>requirement</key>
 			<string>cdhash H"b7924dea38353c0e6d497962f2fbf27623644207"</string>
+		</dict>
+		<key>Frameworks/managers</key>
+		<dict>
+			<key>symlink</key>
+			<string>../Resources/managers</string>
+		</dict>
+		<key>Frameworks/models</key>
+		<dict>
+			<key>symlink</key>
+			<string>../Resources/models</string>
+		</dict>
+		<key>Frameworks/psycopg2/.dylibs</key>
+		<dict>
+			<key>symlink</key>
+			<string>__dot__dylibs</string>
+		</dict>
+		<key>Frameworks/psycopg2/__dot__dylibs/libcom_err.3.0.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			Y3dHY3MusMEGhvFL+QZX9y6nhvg=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"18afb2b3d68d01a7704a67481aef1591538062e6" or cdhash H"63774763732eb0c10686f14bf90657f72ea786f8"</string>
+		</dict>
+		<key>Frameworks/psycopg2/__dot__dylibs/libcrypto.3.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			0bO5bndFyHz92Lr77dxT9pnrm4A=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"533646ed2045ee1a8a678d082292cb45c5695d99" or cdhash H"d1b3b96e7745c87cfdd8bafbeddc53f699eb9b80"</string>
+		</dict>
+		<key>Frameworks/psycopg2/__dot__dylibs/libgssapi_krb5.2.2.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			rYYAMFIBTf64GxF2pnwy9miKYZA=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"489d3a68dc143a9edb21cf3774435832e68f248c" or cdhash H"ad86003052014dfeb81b1176a67c32f6688a6190"</string>
+		</dict>
+		<key>Frameworks/psycopg2/__dot__dylibs/libk5crypto.3.1.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			gb5GJVR7fjEOEo0b65ZnKkle4eg=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"b40ea03a1c35556fcc556be4bb353480368645c4" or cdhash H"81be4625547b7e310e128d1beb96672a495ee1e8"</string>
+		</dict>
+		<key>Frameworks/psycopg2/__dot__dylibs/libkrb5.3.3.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			TulHMepIDgqRyRn2lyJxTrxa6MQ=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"e1bd0d15e78a7794a2924342fb57a1bde0cfe3fa" or cdhash H"4ee94731ea480e0a91c919f69722714ebc5ae8c4"</string>
+		</dict>
+		<key>Frameworks/psycopg2/__dot__dylibs/libkrb5support.1.1.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			GnA4An6WaZ51iabSN3WsMbCNcx4=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"2670a7c2ae4c07a5e10b6c275c06d674b5fc5d21" or cdhash H"1a7038027e96699e7589a6d23775ac31b08d731e"</string>
+		</dict>
+		<key>Frameworks/psycopg2/__dot__dylibs/liblber.2.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			oiCRd07QrMX+C39xfOzM0CT+XeA=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"830cfae254b5008a19e587ef628c5e4176ba708b" or cdhash H"a22091774ed0acc5fe0b7f717cecccd024fe5de0"</string>
+		</dict>
+		<key>Frameworks/psycopg2/__dot__dylibs/libldap.2.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			sFNz0jX4CXFTAGIxfnzxMd9V6sI=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"789f629ee059883b2a0d11e3e638385b0a2dafa9" or cdhash H"b05373d235f80971530062317e7cf131df55eac2"</string>
+		</dict>
+		<key>Frameworks/psycopg2/__dot__dylibs/libpq.5.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			hZqcTUn/y5NrZBMBvyYmzPwFBwQ=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"a5ec7d8a1575209708673713fd7d4dc33f879a33" or cdhash H"859a9c4d49ffcb936b641301bf2626ccfc050704"</string>
+		</dict>
+		<key>Frameworks/psycopg2/__dot__dylibs/libssl.3.dylib</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			ugBGun0nWMEQpfPJcMAoulQPqVI=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"df64f71798a63fb82113cf14b21e5016f5747042" or cdhash H"ba0046ba7d2758c110a5f3c970c028ba540fa952"</string>
+		</dict>
+		<key>Frameworks/psycopg2/_psycopg.cpython-314-darwin.so</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			VH75N3ulJj7BLTr7pcmFkSaUs0o=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"547ef9377ba5263ec12d3afba5c985912694b34a"</string>
+		</dict>
+		<key>Frameworks/pydantic-2.13.5.dist-info</key>
+		<dict>
+			<key>symlink</key>
+			<string>../Resources/pydantic-2.13.5.dist-info</string>
+		</dict>
+		<key>Frameworks/pydantic_core/_pydantic_core.cpython-314-darwin.so</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			Arh+IOK4znO/YRg2Iybr5LjUrwM=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"02b87e20e2b8ce73bf6118362326ebe4b8d4af03"</string>
 		</dict>
 		<key>Frameworks/python3.14</key>
 		<dict>
@@ -1495,6 +2044,15 @@
 			<key>requirement</key>
 			<string>cdhash H"74f29d4bb9d4517c01beaf2ebbfd804090cf1715"</string>
 		</dict>
+		<key>Frameworks/python3__dot__14/lib-dynload/_sqlite3.cpython-314-darwin.so</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			IiLFZqbN3/Oh0eslzfNPR3goH3U=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"2222c566a6cddff3a1d1eb25cdf34f4778281f75"</string>
+		</dict>
 		<key>Frameworks/python3__dot__14/lib-dynload/_ssl.cpython-314-darwin.so</key>
 		<dict>
 			<key>cdhash</key>
@@ -1530,6 +2088,24 @@
 			</data>
 			<key>requirement</key>
 			<string>cdhash H"f1e13285c4c8dacd5b8ee6681856b822279bdeaf"</string>
+		</dict>
+		<key>Frameworks/python3__dot__14/lib-dynload/_uuid.cpython-314-darwin.so</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			W3lm2A7bN4PWhMmJkOK1AcoJ5fk=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"5b7966d80edb3783d684c98990e2b501ca09e5f9"</string>
+		</dict>
+		<key>Frameworks/python3__dot__14/lib-dynload/_zoneinfo.cpython-314-darwin.so</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			L84rWXJtr1zhrjb90dHEwlSH0fg=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"2fce2b59726daf5ce1ae36fdd1d1c4c25487d1f8"</string>
 		</dict>
 		<key>Frameworks/python3__dot__14/lib-dynload/_zstd.cpython-314-darwin.so</key>
 		<dict>
@@ -1603,6 +2179,15 @@
 			<key>requirement</key>
 			<string>cdhash H"88b7a24b1a6c2a111ca7f9f615d1ecc598a0454e"</string>
 		</dict>
+		<key>Frameworks/python3__dot__14/lib-dynload/readline.cpython-314-darwin.so</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			HXe5QtiUzk1L0SvpekW4jzmU6XU=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"1d77b942d894ce4d4bd12be97a45b88f3994e975"</string>
+		</dict>
 		<key>Frameworks/python3__dot__14/lib-dynload/resource.cpython-314-darwin.so</key>
 		<dict>
 			<key>cdhash</key>
@@ -1620,6 +2205,24 @@
 			</data>
 			<key>requirement</key>
 			<string>cdhash H"14dc6234500dcaccae528270878e80105f1171fc"</string>
+		</dict>
+		<key>Frameworks/python3__dot__14/lib-dynload/syslog.cpython-314-darwin.so</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			EAldr48Bwd35gqVmnr9gxjJ7gfk=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"10095daf8f01c1ddf982a5669ebf60c6327b81f9"</string>
+		</dict>
+		<key>Frameworks/python3__dot__14/lib-dynload/termios.cpython-314-darwin.so</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			ypyFZJcBf1rffq7f61cJ13w1Hc4=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"ca9c856497017f5adf7eaedfeb5709d77c351dce"</string>
 		</dict>
 		<key>Frameworks/python3__dot__14/lib-dynload/unicodedata.cpython-314-darwin.so</key>
 		<dict>
@@ -1639,10 +2242,27 @@
 			<key>requirement</key>
 			<string>cdhash H"d99d31fc07a8b48582cb7923172eba2b1a208fbd"</string>
 		</dict>
+		<key>Frameworks/setuptools</key>
+		<dict>
+			<key>symlink</key>
+			<string>../Resources/setuptools</string>
+		</dict>
 		<key>Frameworks/tcl9</key>
 		<dict>
 			<key>symlink</key>
 			<string>../Resources/tcl9</string>
+		</dict>
+		<key>Frameworks/utils</key>
+		<dict>
+			<key>symlink</key>
+			<string>../Resources/utils</string>
+		</dict>
+		<key>Resources/.env</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Cdd4LPTB5VvJ8vk5pT5D9tj/+A6yDYoQP+/g9sFBHkA=
+			</data>
 		</dict>
 		<key>Resources/LibraryManagement.icns</key>
 		<dict>
@@ -3055,6 +3675,132 @@
 			gFG8pONGon6x0ONhu/oQ/1r/mkyMfvFPKDoFBlbaFiQ=
 			</data>
 		</dict>
+		<key>Resources/ai_agent/__init__.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			nOGaF0CHuZT7HQo+RTVPq9V5408H/BMgLgXgk6X0gy0=
+			</data>
+		</dict>
+		<key>Resources/ai_agent/agent.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			xj+xxxD5CEFsuXpS7yqWHF3/43d/T3HENlhTgSpvSno=
+			</data>
+		</dict>
+		<key>Resources/ai_agent/chatbot.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			TejYL1teRCBVv7BJbmvCHWvNr/BKwYbDAY6iy5q6YXE=
+			</data>
+		</dict>
+		<key>Resources/ai_agent/prompts.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			us/SBxvICxXfiibcFur4AbNa20rRmJZ9HGm/iupQ5Ys=
+			</data>
+		</dict>
+		<key>Resources/ai_agent/tools.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			jtc9YboflCcd7I2W6qGEW3/20WxpncF6RAO1jA8Jpdg=
+			</data>
+		</dict>
+		<key>Resources/assets/.gitkeep</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=
+			</data>
+		</dict>
+		<key>Resources/assets/LibraryManagement.icns</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			kXHgpYYifctxEK7EM3EYFTBwWGw/2W+BdnA0ht6A3UI=
+			</data>
+		</dict>
+		<key>Resources/assets/LibraryManagement.iconset/icon_128x128.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			1my97ScLn2Pga9xm7p9Yh7psjl89lioWQWdMtQ586+I=
+			</data>
+		</dict>
+		<key>Resources/assets/LibraryManagement.iconset/icon_128x128@2x.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Ya0WPoqscZtGgQTWJaHqwWTZY9Be8A4L8lW6ofcHsHw=
+			</data>
+		</dict>
+		<key>Resources/assets/LibraryManagement.iconset/icon_16x16.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			vjkbRDm8Tcky+KOX9E1pSD1zrYI7lqt4ziZV/wD7r90=
+			</data>
+		</dict>
+		<key>Resources/assets/LibraryManagement.iconset/icon_16x16@2x.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			0V+PXJF2QNEnBI/rlx8PPTp0qF1Zxv0CZRjj1O+l5QM=
+			</data>
+		</dict>
+		<key>Resources/assets/LibraryManagement.iconset/icon_256x256.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Ya0WPoqscZtGgQTWJaHqwWTZY9Be8A4L8lW6ofcHsHw=
+			</data>
+		</dict>
+		<key>Resources/assets/LibraryManagement.iconset/icon_256x256@2x.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			jDSfo0hJBJnbWK5x72OtKO8/0RKsjZ2hYdQc/FdHaR8=
+			</data>
+		</dict>
+		<key>Resources/assets/LibraryManagement.iconset/icon_32x32.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			0V+PXJF2QNEnBI/rlx8PPTp0qF1Zxv0CZRjj1O+l5QM=
+			</data>
+		</dict>
+		<key>Resources/assets/LibraryManagement.iconset/icon_32x32@2x.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			I2trvRHjVhEkkubcbry3dhDeRj5DhbfOcY6KWygaTks=
+			</data>
+		</dict>
+		<key>Resources/assets/LibraryManagement.iconset/icon_512x512.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			jDSfo0hJBJnbWK5x72OtKO8/0RKsjZ2hYdQc/FdHaR8=
+			</data>
+		</dict>
+		<key>Resources/assets/LibraryManagement.iconset/icon_512x512@2x.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			K1V20DhbC9ezq/i05wsw4HqoFpp2z3Yp8WzUG8bln/E=
+			</data>
+		</dict>
+		<key>Resources/assets/icons/.gitkeep</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=
+			</data>
+		</dict>
 		<key>Resources/assets/logo.png</key>
 		<dict>
 			<key>hash2</key>
@@ -3062,11 +3808,32 @@
 			jDSfo0hJBJnbWK5x72OtKO8/0RKsjZ2hYdQc/FdHaR8=
 			</data>
 		</dict>
+		<key>Resources/assets/logo.svg</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			nyVxDSCrNLjrWYvi+K+oV4fng9N27LKPS57ERsa67WE=
+			</data>
+		</dict>
 		<key>Resources/base_library.zip</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			VMFxKztDe+9vDWq/yCJOk6GKQZIJ5EVfBLVt+eL4xAM=
+			EGWLUHBsY6WvBTgVIfkjfnwJia/wbfhyeV3y6Jjz5OY=
+			</data>
+		</dict>
+		<key>Resources/certifi/cacert.pem</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			nMKndLUZjc/xTZvh5mCR9TiXXYZ84Cmpa84VpV39cw8=
+			</data>
+		</dict>
+		<key>Resources/certifi/py.typed</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=
 			</data>
 		</dict>
 		<key>Resources/customtkinter/assets/fonts/CustomTkinter_shapes_font.otf</key>
@@ -3125,6 +3892,109 @@
 			T0h4uMgJdZcUb/J/sgICl+skvZ0nuf71fsN3UTLxKqU=
 			</data>
 		</dict>
+		<key>Resources/database/__init__.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			WGfFP/D5my7+64qnbaoSMwRJqpih9rfJJKwBffrlMN0=
+			</data>
+		</dict>
+		<key>Resources/database/db_manager.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			0l+FNABjlvuyRCdV4mv0zInpDF477/gb4V+USa/2pUo=
+			</data>
+		</dict>
+		<key>Resources/database/db_setup.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			44UTzfjXq9bLaamUaP3cMZ326YRQsWftuIPDrumT8YU=
+			</data>
+		</dict>
+		<key>Resources/database/seed_data.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			zVwxJL4jLXFuGL+rxZgn8DjQBJrg3kawoXlIrxaj1ig=
+			</data>
+		</dict>
+		<key>Resources/greenlet</key>
+		<dict>
+			<key>symlink</key>
+			<string>../Frameworks/greenlet</string>
+		</dict>
+		<key>Resources/gui/__init__.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			TtgQzaEIj286X9ZdTb5fjJjiIeuS/xaQI5LdDkUYaFo=
+			</data>
+		</dict>
+		<key>Resources/gui/book_catalog_view.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			c1qH4lF6Ao+ylQ8XAq0pStw+tuMpJdLYJ1tuIbTgkuU=
+			</data>
+		</dict>
+		<key>Resources/gui/borrow_return_view.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ZlZPV6ixia4w1WQEo9w/Zt1fZjPPod0ZX0Coh4FHPUw=
+			</data>
+		</dict>
+		<key>Resources/gui/category_view.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			w2JgVMH0P1Ha/YbtUKwBS1DPj1BJPRH5TJ5E42EYZQg=
+			</data>
+		</dict>
+		<key>Resources/gui/chatbot_window.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			dHy1SO4Pi8mn/XapmTY6pRPcPVzF5gz8Iq/YZGIimRo=
+			</data>
+		</dict>
+		<key>Resources/gui/dashboard.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			v4w1GxjfTjKNehJRt1iyTO+Mqwi1z/PhrfzxbI9DwO8=
+			</data>
+		</dict>
+		<key>Resources/gui/login_window.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			98Bf7Lqh4JxMu1bXmfRZ4t1gssFA3+ynv+yN+t4k42Q=
+			</data>
+		</dict>
+		<key>Resources/gui/member_view.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			tJTzeFyoE0+l1oHt8xoUBjBbmhdIf6h65I11Yb/rQIk=
+			</data>
+		</dict>
+		<key>Resources/gui/reports_view.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			u3or4JZNmuSxhsjLFgXcNxboXpgtuEDz4M3h1/s4TkU=
+			</data>
+		</dict>
+		<key>Resources/gui/reservation_view.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			+WXXQ16g0kCK3uqwR0bg09Dm3J5Rdg4J25x+H/3l0CY=
+			</data>
+		</dict>
 		<key>Resources/libXau.6.dylib</key>
 		<dict>
 			<key>symlink</key>
@@ -3135,20 +4005,75 @@
 			<key>symlink</key>
 			<string>PIL/.dylibs/libavif.16.4.2.dylib</string>
 		</dict>
+		<key>Resources/libbrotlicommon.1.2.0.dylib</key>
+		<dict>
+			<key>symlink</key>
+			<string>PIL/.dylibs/libbrotlicommon.1.2.0.dylib</string>
+		</dict>
+		<key>Resources/libbrotlidec.1.2.0.dylib</key>
+		<dict>
+			<key>symlink</key>
+			<string>PIL/.dylibs/libbrotlidec.1.2.0.dylib</string>
+		</dict>
+		<key>Resources/libcom_err.3.0.dylib</key>
+		<dict>
+			<key>symlink</key>
+			<string>psycopg2/.dylibs/libcom_err.3.0.dylib</string>
+		</dict>
 		<key>Resources/libcrypto.3.dylib</key>
 		<dict>
 			<key>symlink</key>
-			<string>../Frameworks/libcrypto.3.dylib</string>
+			<string>psycopg2/.dylibs/libcrypto.3.dylib</string>
+		</dict>
+		<key>Resources/libfreetype.6.dylib</key>
+		<dict>
+			<key>symlink</key>
+			<string>PIL/.dylibs/libfreetype.6.dylib</string>
+		</dict>
+		<key>Resources/libgssapi_krb5.2.2.dylib</key>
+		<dict>
+			<key>symlink</key>
+			<string>psycopg2/.dylibs/libgssapi_krb5.2.2.dylib</string>
+		</dict>
+		<key>Resources/libharfbuzz.0.dylib</key>
+		<dict>
+			<key>symlink</key>
+			<string>PIL/.dylibs/libharfbuzz.0.dylib</string>
 		</dict>
 		<key>Resources/libjpeg.62.4.0.dylib</key>
 		<dict>
 			<key>symlink</key>
 			<string>PIL/.dylibs/libjpeg.62.4.0.dylib</string>
 		</dict>
+		<key>Resources/libk5crypto.3.1.dylib</key>
+		<dict>
+			<key>symlink</key>
+			<string>psycopg2/.dylibs/libk5crypto.3.1.dylib</string>
+		</dict>
+		<key>Resources/libkrb5.3.3.dylib</key>
+		<dict>
+			<key>symlink</key>
+			<string>psycopg2/.dylibs/libkrb5.3.3.dylib</string>
+		</dict>
+		<key>Resources/libkrb5support.1.1.dylib</key>
+		<dict>
+			<key>symlink</key>
+			<string>psycopg2/.dylibs/libkrb5support.1.1.dylib</string>
+		</dict>
+		<key>Resources/liblber.2.dylib</key>
+		<dict>
+			<key>symlink</key>
+			<string>psycopg2/.dylibs/liblber.2.dylib</string>
+		</dict>
 		<key>Resources/liblcms2.2.dylib</key>
 		<dict>
 			<key>symlink</key>
 			<string>PIL/.dylibs/liblcms2.2.dylib</string>
+		</dict>
+		<key>Resources/libldap.2.dylib</key>
+		<dict>
+			<key>symlink</key>
+			<string>psycopg2/.dylibs/libldap.2.dylib</string>
 		</dict>
 		<key>Resources/liblzma.5.dylib</key>
 		<dict>
@@ -3160,6 +4085,16 @@
 			<key>symlink</key>
 			<string>PIL/.dylibs/libopenjp2.2.5.4.dylib</string>
 		</dict>
+		<key>Resources/libpng16.16.dylib</key>
+		<dict>
+			<key>symlink</key>
+			<string>PIL/.dylibs/libpng16.16.dylib</string>
+		</dict>
+		<key>Resources/libpq.5.dylib</key>
+		<dict>
+			<key>symlink</key>
+			<string>psycopg2/.dylibs/libpq.5.dylib</string>
+		</dict>
 		<key>Resources/libsharpyuv.0.dylib</key>
 		<dict>
 			<key>symlink</key>
@@ -3168,7 +4103,7 @@
 		<key>Resources/libssl.3.dylib</key>
 		<dict>
 			<key>symlink</key>
-			<string>../Frameworks/libssl.3.dylib</string>
+			<string>psycopg2/.dylibs/libssl.3.dylib</string>
 		</dict>
 		<key>Resources/libtiff.6.dylib</key>
 		<dict>
@@ -3205,10 +4140,223 @@
 			<key>symlink</key>
 			<string>../Frameworks/libzstd.1.dylib</string>
 		</dict>
+		<key>Resources/managers/__init__.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			9mD9w/VxOpAgfNMbt+9kYFcpz41Dn2GEgkilCkqwIaY=
+			</data>
+		</dict>
+		<key>Resources/managers/auth_manager.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			CvWFf1zXLc/yHq5Gahm4jMZG63hkTRnB3z/s4qHgEBg=
+			</data>
+		</dict>
+		<key>Resources/managers/book_manager.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			fQYE1NM2FHkh5ud79QNcNmh1XdMC9LR0ItyYqF/ZuNU=
+			</data>
+		</dict>
+		<key>Resources/managers/category_manager.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ZcPRt2ww6Iza+SpWSssetv2OkMUggzPPnY4s1rgKEUE=
+			</data>
+		</dict>
+		<key>Resources/managers/fine_manager.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			EaflqkSlIG/fQ7xhVqLqF4h/dW2TVVLEcnHndNvWLMA=
+			</data>
+		</dict>
+		<key>Resources/managers/member_manager.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			3EWnOg+p4cCvEF7ZahCuNhSvphUyDF79h/OrsPUpvVg=
+			</data>
+		</dict>
+		<key>Resources/managers/report_manager.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			cm+h1bRwVhWj19CjaIfqmR3kAnpOzA4E/qtzKn4tDJE=
+			</data>
+		</dict>
+		<key>Resources/managers/search_manager.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			J2LN61KkbQHMXmwFXuWc8FhCvjTDNcgJgkCdvRNAzkA=
+			</data>
+		</dict>
+		<key>Resources/managers/transaction_manager.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			b3mV3bXImb6edeBlvKeQ5dFOOrFGbL9mM46G7sGvNSI=
+			</data>
+		</dict>
+		<key>Resources/models/__init__.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ClKDYKKVXXG8EUa/vW0jDLwZxB8+mAu86VyvPio+/4A=
+			</data>
+		</dict>
+		<key>Resources/models/book.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			qq2WAV/HtRCk7bcu39jT5xAuinEli7kSXCXaXqe3khk=
+			</data>
+		</dict>
+		<key>Resources/models/borrow_transaction.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			oUAmDo20Tw3wzV8Zv6SasKC/+vacmDH8BGaKoaJ/rsM=
+			</data>
+		</dict>
+		<key>Resources/models/fine.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			aD7KudYC9f/yWWr+bb/zroT6XwRZIXHjXVYhQ6qCUcI=
+			</data>
+		</dict>
+		<key>Resources/models/invoice.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			hWdaxqVN0dxDx/jFYclo7FfZg6qChPOZxAqlCE0QyOw=
+			</data>
+		</dict>
+		<key>Resources/models/member.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			xwU1VLTo5NMfBw/H8JHpqHNrMp+wCerHI2KuQMZv/dQ=
+			</data>
+		</dict>
+		<key>Resources/models/user.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			b4HooRPXw3ESOgFhmfgQwjhT9kgMzWIVuwihPYULPSs=
+			</data>
+		</dict>
+		<key>Resources/psycopg2</key>
+		<dict>
+			<key>symlink</key>
+			<string>../Frameworks/psycopg2</string>
+		</dict>
+		<key>Resources/pydantic-2.13.5.dist-info/INSTALLER</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			zuuue4knoyJ+UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg=
+			</data>
+		</dict>
+		<key>Resources/pydantic-2.13.5.dist-info/METADATA</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			BoWDDRNke9bz8FUmBD0yqLKiIdhrU3cwU9bFK7F6nAc=
+			</data>
+		</dict>
+		<key>Resources/pydantic-2.13.5.dist-info/RECORD</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			swRk3B7Sv2UyWsvyCs7Buo7BaKzQinFGxba5ZhsMTu8=
+			</data>
+		</dict>
+		<key>Resources/pydantic-2.13.5.dist-info/WHEEL</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			zOwg4jB6zX2kU910N+cMawjivD6tO8NEWvE12je1bVk=
+			</data>
+		</dict>
+		<key>Resources/pydantic-2.13.5.dist-info/licenses/LICENSE</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			qeGG88oWte74QxjnpwFyE1GgDLe4rjpDlLZ7SeNSnvM=
+			</data>
+		</dict>
+		<key>Resources/pydantic_core</key>
+		<dict>
+			<key>symlink</key>
+			<string>../Frameworks/pydantic_core</string>
+		</dict>
 		<key>Resources/python3.14</key>
 		<dict>
 			<key>symlink</key>
 			<string>../Frameworks/python3.14</string>
+		</dict>
+		<key>Resources/setuptools/_vendor/importlib_metadata-8.7.1.dist-info/INSTALLER</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			5hhM4Q4mYTT9z6QB6PGpUAW81PGNFrYrdXMj4oM/6ak=
+			</data>
+		</dict>
+		<key>Resources/setuptools/_vendor/importlib_metadata-8.7.1.dist-info/METADATA</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			o+OLnuQyYonUhkcE8w4pnudp4jCc6fSnXw3hpQrQo1Y=
+			</data>
+		</dict>
+		<key>Resources/setuptools/_vendor/importlib_metadata-8.7.1.dist-info/RECORD</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Uqa47g3hXPf9mWJfQ7l80uOUKshvFgVOqQ3kjmbyk1U=
+			</data>
+		</dict>
+		<key>Resources/setuptools/_vendor/importlib_metadata-8.7.1.dist-info/REQUESTED</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=
+			</data>
+		</dict>
+		<key>Resources/setuptools/_vendor/importlib_metadata-8.7.1.dist-info/WHEEL</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			/zCd3N1l69ArxyTb8rzEoP9TpbYXkqRFSNOD5OuxnTs=
+			</data>
+		</dict>
+		<key>Resources/setuptools/_vendor/importlib_metadata-8.7.1.dist-info/licenses/LICENSE</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			RYUC4S2Xu/ZEOGBqIARKqF6wX7CoqAe7NdvsJT/R/AQ=
+			</data>
+		</dict>
+		<key>Resources/setuptools/_vendor/importlib_metadata-8.7.1.dist-info/top_level.txt</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			CO3fD9yylANiXkrMo4qHLV/mqXL2sC5JFKgt1yWAT+A=
+			</data>
+		</dict>
+		<key>Resources/setuptools/_vendor/jaraco/text/Lorem ipsum.txt</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			N/7c/79zxOufBY9HZ3yzMgOkNv+TkOTTio4BydrSjgs=
+			</data>
 		</dict>
 		<key>Resources/tcl9/9.0/http-2.10.2.tm</key>
 		<dict>
@@ -3243,6 +4391,34 @@
 			<key>hash2</key>
 			<data>
 			A9puvy4xTmyTFDB2HMR89Ybe2SEPnFr+2ASFingDTmc=
+			</data>
+		</dict>
+		<key>Resources/utils/__init__.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			BHJ4Y8ZtpEsxdnki1ipJmkITUof/VpHeZnHsVPskHsA=
+			</data>
+		</dict>
+		<key>Resources/utils/helpers.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			X1pMD8ne2KuwLkhiN0R5pbdiJpzmMzs0ZpQd82/iP1s=
+			</data>
+		</dict>
+		<key>Resources/utils/receipt_modal.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			bt3xK7lnrXsm9foY/bUehPrGGscvFaPGsuWxyZVBQpQ=
+			</data>
+		</dict>
+		<key>Resources/utils/validators.py</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ucwDsrfYeULrBBta36F3fiOlSVC4WAzQHWkkm9YYD6I=
 			</data>
 		</dict>
 	</dict>
