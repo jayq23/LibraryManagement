@@ -12,8 +12,8 @@ except ModuleNotFoundError:
 BASE_DIR = Path(__file__).resolve().parent
 load_dotenv(BASE_DIR / ".env")
 
-APP_NAME = os.getenv("APP_NAME", "Library Management System")
+APP_NAME = os.getenv("APP_NAME", "Viva La Vida")
 DB_URL = os.getenv("DB_URL", "postgresql+psycopg2://postgres:postgres@localhost:5432/library_management")
 if DB_URL.startswith("sqlite"):
 	raise RuntimeError("PostgreSQL is required. Set DB_URL to a PostgreSQL connection string in .env.")
-LLM_API_KEY = os.getenv("LLM_API_KEY", "")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
