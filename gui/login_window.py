@@ -32,7 +32,7 @@ class LoginWindow(ctk.CTk):
         self.password_entry.pack(pady=6, padx=34, fill="x")
         self.status_label = ctk.CTkLabel(card, text="", text_color="#D17A67", wraplength=330)
         self.status_label.pack(pady=(8, 0))
-        ctk.CTkButton(card, text="Sign in",
+        ctk.CTkButton(card, text="LOGIN",
                      command=self.login, height=42, 
                      corner_radius=8, fg_color="#2A9D9A",
                      hover_color="#21817F").pack(pady=(0, 0),
