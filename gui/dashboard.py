@@ -33,9 +33,6 @@ CORAL, CORAL_DIM = "#D17A67", "#8F5548"
 METRIC_KEYS = ("total_books", "active_loans", "overdue", "members")
 
 
-# ----------------------------------------------------------------------
-# Data helpers
-# ----------------------------------------------------------------------
 def _value(row, key, default=None):
     try:
         return row[key]
@@ -292,7 +289,6 @@ class Dashboard(ctk.CTkToplevel):
             except Exception:
                 pass
 
-        # The old widgets are gone, so drop every reference to them
         self.metric_labels = {}
         self.loans_chart = None
         self.fines_chart = None
@@ -388,9 +384,7 @@ class Dashboard(ctk.CTkToplevel):
             except Exception:
                 pass
 
-    # ------------------------------------------------------------------
     # Dashboard data + live sync
-    # ------------------------------------------------------------------
     @staticmethod
     def fetch_dashboard_data() -> tuple[dict, list[dict]]:
         """Reads fresh numbers from the database. Raises if either query fails."""
