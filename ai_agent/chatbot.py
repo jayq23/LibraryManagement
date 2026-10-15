@@ -1,4 +1,4 @@
-"""Conversation state and message history manager for GUI Chatbot."""
+# Conversation state and message history manager for GUI Chatbot.
 
 import logging
 import threading
@@ -12,24 +12,22 @@ MAX_HISTORY_MESSAGES = 20  # only the most recent messages are sent to the model
 
 
 class Chatbot:
+    # Initialize the component.
     def __init__(self):
         # Raises ValueError if the API key is missing. Catch this in the GUI.
         self.agent = GroqAgent()
         self.history: list[dict] = []
         self._lock = threading.Lock()
 
+    # Handle recent messages.
     def _recent_messages(self) -> list[dict]:
-        """Last N messages, always starting on a user message."""
         recent = self.history[-MAX_HISTORY_MESSAGES:]
         while recent and recent[0]["role"] != "user":
             recent = recent[1:]
         return recent
 
+    # Handle ask.
     def ask(self, prompt: str) -> str:
-        """Accepts user prompt, updates history, calls Groq Agent, and returns response.
-
-        Safe to call from a worker thread. Blocks until the reply is ready.
-        """
         user_message = (prompt or "").strip()
         if not user_message:
             return "Please type a message."
@@ -52,14 +50,14 @@ class Chatbot:
         finally:
             self._lock.release()
 
+    # Handle pop receipts.
     def pop_receipts(self) -> list[ReceiptRequest]:
-        """Receipts queued by tools (reservation/collection). Call on the GUI thread after ask()."""
         return pop_receipts()
 
+    # Retrieve get history.
     def get_history(self) -> list[dict]:
-        """Returns current message history."""
         return self.history
 
+    # Clear clear history.
     def clear_history(self) -> None:
-        """Clears memory state."""
         self.history.clear()
