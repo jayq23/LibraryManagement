@@ -1,1 +1,1 @@
-"""Book manager tests."""
+# Book manager tests.
