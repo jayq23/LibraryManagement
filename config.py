@@ -1,4 +1,4 @@
-"""Application configuration loaded from environment variables."""
+# Application configuration loaded from environment variables.
 
 import os
 from pathlib import Path
@@ -6,6 +6,7 @@ from pathlib import Path
 try:
 	from dotenv import load_dotenv
 except ModuleNotFoundError:
+	# Load load dotenv.
 	def load_dotenv(_: Path) -> None:
 		return None
 
