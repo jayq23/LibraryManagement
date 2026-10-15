@@ -1,4 +1,4 @@
-"""Login screen."""
+# Login screen.
 
 from pathlib import Path
 
@@ -10,6 +10,7 @@ from managers.auth_manager import AuthManager
 
 
 class LoginWindow(ctk.CTk):
+    # Initialize the component.
     def __init__(self) -> None:
         super().__init__()
         ctk.set_appearance_mode("dark")
@@ -39,6 +40,7 @@ class LoginWindow(ctk.CTk):
                      padx=50,fill="x")
         self.bind("<Return>", lambda _: self.login())
 
+    # Authenticate login.
     def login(self) -> None:
         username = self.username_entry.get().strip()
         password = self.password_entry.get()
