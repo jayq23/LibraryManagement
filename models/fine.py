@@ -1,4 +1,4 @@
-"""Fine and penalty models."""
+# Fine and penalty models.
 
 from dataclasses import dataclass
 from decimal import Decimal
