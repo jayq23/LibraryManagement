@@ -1,4 +1,4 @@
-"""Borrow, return, reservation, and due-date business logic."""
+# Borrow, return, reservation, and due-date business logic.
 
 from datetime import date, timedelta
 
@@ -9,11 +9,13 @@ from database.db_manager import DatabaseManager
 
 
 class TransactionManager:
+    # Initialize the component.
     def __init__(self, database: DatabaseManager | None = None, loan_days: int = 14, fine_per_day: float = 10.0):
         self.database = database or DatabaseManager(DB_URL)
         self.loan_days = loan_days
         self.fine_per_day = fine_per_day  # ₱10 per day late, adjust as needed
 
+    # Borrow borrow.
     def borrow(self, member_id: str, isbn: str, due_date: date | None = None) -> int:
         due = due_date or date.today() + timedelta(days=self.loan_days)
         if due < date.today():
@@ -34,10 +36,8 @@ class TransactionManager:
             connection.execute(text("UPDATE books SET available_copies = available_copies - 1 WHERE isbn = :isbn"), {"isbn": isbn})
             return int(result.scalar_one())
 
+    # Return return book.
     def return_book(self, loan_id: int) -> dict:
-        """Marks a loan as returned. If the book is returned past its due date,
-        computes a late fine (₱ per day late) and inserts an unpaid fine record.
-        Returns a dict with days_late and fine_amount so the GUI can show a receipt."""
         with self.database.engine.begin() as connection:
             loan = connection.execute(
                 text("SELECT isbn, due_date, member_id, returned_on FROM loans WHERE id = :loan_id FOR UPDATE"),
@@ -78,12 +78,14 @@ class TransactionManager:
                 "fine_amount": fine_amount,
             }
 
+    # Handle active loans.
     def active_loans(self) -> list[dict]:
         return self.database.fetch_all(
             "SELECT loans.*, members.name, books.title FROM loans JOIN members USING (member_id) JOIN books USING (isbn) "
             "WHERE returned_on IS NULL ORDER BY due_date"
         )
 
+    # Reserve reserve.
     def reserve(self, member_id: str, isbn: str) -> int:
         with self.database.engine.begin() as connection:
             member = connection.execute(
@@ -117,9 +119,11 @@ class TransactionManager:
             )
             return int(result.scalar_one())
 
+    # Handle active reservations.
     def active_reservations(self) -> list[dict]:
         return self.list_reservations("active")
 
+    # List list reservations.
     def list_reservations(self, status: str | None = None) -> list[dict]:
         status_clause = "AND reservations.status = :status" if status else ""
         return self.database.fetch_all(
@@ -129,6 +133,7 @@ class TransactionManager:
             {"status": status} if status else {},
         )
 
+    # Cancel cancel reservation.
     def cancel_reservation(self, reservation_id: int) -> None:
         result = self.database.execute(
             "UPDATE reservations SET status = 'cancelled' WHERE id = :reservation_id AND status = 'active'",
@@ -137,6 +142,7 @@ class TransactionManager:
         if result.rowcount == 0:
             raise ValueError("Active reservation not found")
 
+    # Collect collect reservation.
     def collect_reservation(self, reservation_id: int) -> int:
         with self.database.engine.begin() as connection:
             reservation = connection.execute(
@@ -187,8 +193,8 @@ class TransactionManager:
             )
             return int(loan.scalar_one())
 
+    # Handle unpaid fines.
     def unpaid_fines(self) -> list[dict]:
-        """Returns all unpaid fine records with member and book info, for a Fines view or receipt lookup."""
         return self.database.fetch_all(
             "SELECT fines.*, members.name, books.title FROM fines "
             "JOIN members USING (member_id) "
@@ -197,6 +203,7 @@ class TransactionManager:
             "WHERE fines.paid = FALSE ORDER BY fines.created_at DESC"
         )
 
+    # Handle pay fine.
     def pay_fine(self, fine_id: int) -> None:
         result = self.database.execute(
             "UPDATE fines SET paid = TRUE WHERE id = :fine_id",
@@ -205,6 +212,7 @@ class TransactionManager:
         if result.rowcount == 0:
             raise ValueError("Fine not found")
 
+    # Handle pay fines for member.
     def pay_fines_for_member(self, member_id: str, amount) -> int:
         with self.database.engine.begin() as connection:
             fines = connection.execute(
