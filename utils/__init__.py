@@ -1,1 +1,1 @@
-"""Shared validation and helper utilities."""
+# Shared validation and helper utilities.
