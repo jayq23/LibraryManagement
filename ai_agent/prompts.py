@@ -1,4 +1,4 @@
-"""System prompt for the Viva AI library assistant."""
+# System prompt for the Viva AI library assistant.
 
 from datetime import datetime, timedelta, timezone
 
@@ -42,8 +42,8 @@ Rules:
 """.strip()
 
 
+# Build build system prompt.
 def build_system_prompt() -> str:
-    """Returns the system prompt with the current Philippine date and time."""
     now = datetime.now(PHT)
     date_text = f"{now:%a}, {now:%b} {now.day}, {now.year}"
     time_text = f"{now.hour % 12 or 12}:{now:%M} {now:%p}"
