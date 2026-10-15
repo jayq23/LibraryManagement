@@ -1,1 +1,1 @@
-"""CustomTkinter user interface screens."""
+# CustomTkinter user interface screens.
