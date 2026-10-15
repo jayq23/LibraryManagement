@@ -1,4 +1,4 @@
-"""Regression tests for corrected business rules."""
+# Regression tests for corrected business rules.
 
 from datetime import date, timedelta
 from decimal import Decimal
@@ -10,14 +10,17 @@ from models.invoice import Invoice
 
 
 class QueryCapture:
+    # Initialize the component.
     def __init__(self):
         self.query = ""
 
+    # Fetch fetch all.
     def fetch_all(self, query, parameters=None):
         self.query = query
         return []
 
 
+# Handle test password hash is salted and verifiable.
 def test_password_hash_is_salted_and_verifiable():
     first = AuthManager._hash("secret")
     second = AuthManager._hash("secret")
@@ -27,6 +30,7 @@ def test_password_hash_is_salted_and_verifiable():
     assert AuthManager._verify(first, "wrong") == (False, False)
 
 
+# Handle test legacy sha256 hash is supported for upgrade.
 def test_legacy_sha256_hash_is_supported_for_upgrade():
     import hashlib
 
@@ -36,6 +40,7 @@ def test_legacy_sha256_hash_is_supported_for_upgrade():
     assert AuthManager._verify(legacy, "wrong") == (False, True)
 
 
+# Handle test fine manager uses flat daily rate.
 def test_fine_manager_uses_flat_daily_rate():
     manager = FineManager(database=object())
     due_date = date(2026, 9, 28)
@@ -45,6 +50,7 @@ def test_fine_manager_uses_flat_daily_rate():
     assert manager.calculate(due_date + timedelta(days=1), as_of=date(2026, 10, 1)) == Decimal("20.00")
 
 
+# Handle test monthly activity aggregates before joining.
 def test_monthly_activity_aggregates_before_joining():
     database = QueryCapture()
     ReportManager(database=database).monthly_activity()
@@ -57,6 +63,7 @@ def test_monthly_activity_aggregates_before_joining():
     assert "LEFT JOIN fines ON" not in database.query
 
 
+# Handle test invoice formats amount as pesos.
 def test_invoice_formats_amount_as_pesos():
     invoice = Invoice("TEST-00001", "M001", Decimal("12.50"))
 
