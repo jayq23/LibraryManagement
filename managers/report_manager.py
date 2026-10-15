@@ -1,13 +1,15 @@
-"""Summary and report generation."""
+# Summary and report generation.
 
 from config import DB_URL
 from database.db_manager import DatabaseManager
 
 
 class ReportManager:
+    # Initialize the component.
     def __init__(self, database: DatabaseManager | None = None):
         self.database = database or DatabaseManager(DB_URL)
 
+    # Handle summary.
     def summary(self) -> dict[str, int | float]:
         return {
             "total_books": self.database.fetch_one("SELECT COALESCE(SUM(total_copies), 0) AS value FROM books")["value"],
@@ -17,8 +19,8 @@ class ReportManager:
             "unpaid_fines": self.database.fetch_one("SELECT COALESCE(SUM(amount), 0) AS value FROM fines WHERE paid = FALSE")["value"],
         }
 
+    # Handle monthly activity.
     def monthly_activity(self) -> list[dict]:
-        """Return the latest twelve months of loans and collected fine amounts."""
         return self.database.fetch_all(
             "WITH months AS ("
             " SELECT date_trunc('month', CURRENT_DATE) - (n * INTERVAL '1 month') AS month_start"
