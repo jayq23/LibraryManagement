@@ -1,4 +1,4 @@
-"""Authentication, sessions, and role-based access."""
+# Authentication, sessions, and role-based access.
 
 import hashlib
 import hmac
@@ -13,10 +13,12 @@ class AuthManager:
 	_HASH_PREFIX = "pbkdf2_sha256"
 	_HASH_ITERATIONS = 600_000
 
+	# Initialize the component.
 	def __init__(self, database: DatabaseManager | None = None):
 		self.database = database or DatabaseManager(DB_URL)
 
 	@staticmethod
+	# Handle hash.
 	def _hash(password: str) -> str:
 		salt = secrets.token_hex(16)
 		digest = hashlib.pbkdf2_hmac(
@@ -28,6 +30,7 @@ class AuthManager:
 		return f"{AuthManager._HASH_PREFIX}${AuthManager._HASH_ITERATIONS}${salt}${digest}"
 
 	@classmethod
+	# Handle verify.
 	def _verify(cls, stored_hash: str, password: str) -> tuple[bool, bool]:
 		if stored_hash.startswith(f"{cls._HASH_PREFIX}$"):
 			try:
@@ -47,6 +50,7 @@ class AuthManager:
 		legacy_hash = hashlib.sha256(password.encode("utf-8")).hexdigest()
 		return hmac.compare_digest(stored_hash, legacy_hash), True
 
+	# Handle authenticate.
 	def authenticate(self, username: str, password: str) -> User | None:
 		record = self.database.fetch_one(
 			"SELECT username, role, password_hash FROM users WHERE username = :username",
@@ -64,6 +68,7 @@ class AuthManager:
 			)
 		return User(record["username"], record["role"])
 
+	# Create create user.
 	def create_user(self, username: str, password: str, role: str = "librarian") -> User:
 		if not username.strip() or not password:
 			raise ValueError("Username and password are required")
