@@ -8,6 +8,7 @@ from utils.helpers import enable_mousewheel
 
 
 class ChatbotView(ctk.CTkFrame):
+    # Initialize the component.
     def __init__(self, master, chatbot_instance: Chatbot = None):
         super().__init__(master, fg_color="transparent")
 
@@ -68,8 +69,8 @@ class ChatbotView(ctk.CTkFrame):
         # Re-render UI chat bubbles base sa persistent memory ng Chatbot
         self._render_conversation_history()
 
+    # Render render conversation history.
     def _render_conversation_history(self):
-        """Re-renders existing chat bubbles from chatbot memory."""
         history = self.chatbot.get_history()
         
         if not history:
@@ -86,12 +87,12 @@ class ChatbotView(ctk.CTkFrame):
             elif role == "assistant" and content:
                 self.add_message_bubble(content, is_user=False)
 
+    # Refresh refresh.
     def refresh(self):
-        """Called automatically by Dashboard when switching panels."""
         pass
 
+    # Add add message bubble.
     def add_message_bubble(self, message: str, is_user: bool = False) -> ctk.CTkFrame:
-        """Renders a styled chat bubble in the scrollable view."""
         wrapper = ctk.CTkFrame(self.chat_container, fg_color="transparent")
         wrapper.pack(fill="x", pady=6, padx=10)
 
@@ -122,8 +123,8 @@ class ChatbotView(ctk.CTkFrame):
         self._scroll_to_bottom()
         return wrapper
 
+    # Show show typing indicator.
     def show_typing_indicator(self) -> tuple[ctk.CTkFrame, ctk.CTkLabel]:
-        """Displays an animated typing indicator bubble."""
         wrapper = ctk.CTkFrame(self.chat_container, fg_color="transparent")
         wrapper.pack(fill="x", pady=6, padx=10)
 
@@ -141,6 +142,7 @@ class ChatbotView(ctk.CTkFrame):
         self._scroll_to_bottom()
         return wrapper, indicator_label
 
+    # Send send message.
     def send_message(self):
         user_text = self.input_entry.get().strip()
         if not user_text:
@@ -160,9 +162,11 @@ class ChatbotView(ctk.CTkFrame):
             daemon=True
         ).start()
 
+    # Fetch fetch ai response.
     def _fetch_ai_response(self, user_text: str, indicator_wrapper: ctk.CTkFrame, indicator_label: ctk.CTkLabel):
         is_thinking = True
 
+        # Animate animate indicator.
         def animate_indicator():
             dots = ["Thinking.", "Thinking..", "Thinking..."]
             idx = 0
@@ -186,6 +190,7 @@ class ChatbotView(ctk.CTkFrame):
 
         self.after(0, lambda: self._update_ui_after_response(indicator_wrapper, response))
 
+    # Update update ui after response.
     def _update_ui_after_response(self, indicator_wrapper: ctk.CTkFrame, response: str):
         indicator_wrapper.destroy()
 
@@ -195,7 +200,7 @@ class ChatbotView(ctk.CTkFrame):
         self.input_entry.configure(state="normal")
         self.input_entry.focus()
 
+    # Scroll scroll to bottom.
     def _scroll_to_bottom(self):
-        """Forces scroll view to auto-scroll to the newest message."""
         self.update_idletasks()
         self.chat_container._parent_canvas.yview_moveto(1.0)
