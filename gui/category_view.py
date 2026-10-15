@@ -1,4 +1,4 @@
-"""Category management screen."""
+# Category management screen.
 
 import customtkinter as ctk
 
@@ -7,6 +7,7 @@ from utils.helpers import enable_mousewheel
 
 
 class CategoryView(ctk.CTkFrame):
+    # Initialize the component.
     def __init__(self, master):
         super().__init__(master, fg_color="transparent")
 
@@ -44,6 +45,7 @@ class CategoryView(ctk.CTkFrame):
         enable_mousewheel(self.rows)
         self.refresh()
 
+    # Refresh refresh.
     def refresh(self):
         for widget in self.rows.winfo_children():
             widget.destroy()
@@ -93,6 +95,7 @@ class CategoryView(ctk.CTkFrame):
         except Exception as error:
             self.status.configure(text=f"Unable to load categories: {error}", text_color="#D17A67")
 
+    # Handle toggle books.
     def toggle_books(self, category_id: int, row):
         for child in row.winfo_children():
             if getattr(child, "category_detail", False):
@@ -116,6 +119,7 @@ class CategoryView(ctk.CTkFrame):
                 anchor="w"
             ).pack(fill="x", padx=10, pady=4)
 
+    # Add add category.
     def add_category(self):
         try:
             name = self.name_entry.get().strip()
