@@ -1,4 +1,4 @@
-"""Book catalog screen."""
+# Book catalog screen.
 
 import customtkinter as ctk
 
@@ -8,12 +8,15 @@ from utils.helpers import enable_mousewheel
 
 
 class BookCatalogView(ctk.CTkFrame):
+    # Display and manage the library's book catalog.
+
+    # Initialize the component.
     def __init__(self, master):
         super().__init__(master, fg_color="transparent")
 
-        self.category_map = {}  # Dictionary mapping Name -> ID
+        self.category_map = {}  # Maps category names to their database IDs.
 
-        # --- Add Book Form ---
+        # Book entry form.
         form = ctk.CTkFrame(self, fg_color="#1B252E", border_color="#303D47", border_width=1, corner_radius=10)
         form.pack(fill="x", pady=(0, 12))
 
@@ -52,7 +55,7 @@ class BookCatalogView(ctk.CTkFrame):
 
         self.refresh_categories()
 
-        # --- Restock Form ---
+        # Inventory restocking form.
         restock_form = ctk.CTkFrame(self, fg_color="#1B252E", border_color="#303D47", border_width=1, corner_radius=10)
         restock_form.pack(fill="x", pady=(0, 12))
 
@@ -92,35 +95,38 @@ class BookCatalogView(ctk.CTkFrame):
             hover_color="#21817F"
         ).pack(side="left", padx=(0, 10), pady=10)
 
-        # Status Label
+        # Operation status message.
         self.status = ctk.CTkLabel(self, text="", text_color="#9AA7B0")
         self.status.pack(anchor="w", pady=(4, 14))
 
-        # --- Catalog List ---
+        # Scrollable catalog list.
         self.rows = ctk.CTkScrollableFrame(self, fg_color="#1B252E", border_color="#303D47", border_width=1, corner_radius=10)
         self.rows.pack(fill="both", expand=True)
 
         enable_mousewheel(self.rows)
         self.refresh()
 
+    # Refresh restock book options.
     def refresh_restock_books(self):
         books = BookManager().list_books()
         values = [f"{book['isbn']} - {book['title']}" for book in books]
         self.restock_entry.configure(values=values or ["No books"])
         self.restock_entry.set(values[0] if values else "No books")
 
+    # Refresh category options.
     def refresh_categories(self):
         categories = CategoryManager().list_categories()
-        # Mapping Category Name -> Category ID (Clean UI without showing ID numbers)
         self.category_map = {cat["name"]: cat.get("category_id") or cat.get("id") for cat in categories}
         cat_names = list(self.category_map.keys())
 
         self.category_entry.configure(values=cat_names or ["No category"])
         self.category_entry.set(cat_names[0] if cat_names else "No category")
 
+    # Handle book searches.
     def on_search(self):
         self.refresh(self.search_entry.get().strip())
 
+    # Refresh refresh.
     def refresh(self, query: str | None = None):
         for widget in self.rows.winfo_children():
             widget.destroy()
@@ -184,6 +190,7 @@ class BookCatalogView(ctk.CTkFrame):
         except Exception as error:
             self.status.configure(text=f"Unable to load catalog: {error}", text_color="#D17A67")
 
+    # Add a book to the catalog.
     def add_book(self):
         try:
             selected_cat_name = self.category_entry.get()
@@ -205,6 +212,7 @@ class BookCatalogView(ctk.CTkFrame):
         except Exception as error:
             self.status.configure(text=f"Unable to add title: {error}", text_color="#D17A67")
 
+    # Delete a book from the catalog.
     def delete_book(self, isbn: str):
         try:
             BookManager().delete_book(isbn)
@@ -220,6 +228,7 @@ class BookCatalogView(ctk.CTkFrame):
             else:
                 self.status.configure(text=f"Unable to delete title: {error}", text_color="#D17A67")
 
+    # Add copies to inventory.
     def add_copies(self):
         try:
             isbn = self.restock_entry.get().split(" - ", 1)[0].strip()
