@@ -1,4 +1,4 @@
-"""Reservation management screen."""
+# Reservation management screen.
 
 import customtkinter as ctk
 
@@ -10,6 +10,7 @@ from utils.receipt_helpers import get_book_price, show_receipt
 
 
 class ReservationView(ctk.CTkFrame):
+    # Initialize the component.
     def __init__(self, master):
         super().__init__(master, fg_color="transparent")
 
@@ -84,9 +85,9 @@ class ReservationView(ctk.CTkFrame):
 
     # ------------------------------------------------------------------
     # Member / book pickers
-    # ------------------------------------------------------------------
+    # Handle bind combo search.
     def _bind_combo_search(self, combo: ctk.CTkComboBox, get_values):
-        """Filters the dropdown as the user types. Click the arrow to see the narrowed list."""
+        # Handle on key.
         def on_key(event):
             values = get_values()
             if not values:
@@ -107,14 +108,15 @@ class ReservationView(ctk.CTkFrame):
             pass  # customtkinter internals changed; combo still works without live filtering
 
     @staticmethod
+    # Filter filter.
     def _filter(values: list[str], typed: str) -> list[str]:
         typed = typed.strip().lower()
         if not typed:
             return values
         return [v for v in values if typed in v.lower()]
 
+    # Handle resolve.
     def _resolve(self, combo: ctk.CTkComboBox, values: list[str], label: str) -> str:
-        """Accepts an exact choice, or typed text that matches exactly one option."""
         typed = combo.get().strip()
         if typed in values:
             return typed
@@ -125,6 +127,7 @@ class ReservationView(ctk.CTkFrame):
             raise ValueError(f"No {label} matches '{typed}'.")
         raise ValueError(f"{len(matches)} {label}s match '{typed}'. Pick one from the list.")
 
+    # Refresh refresh options.
     def refresh_options(self):
         try:
             members = [m for m in MemberManager().list_members() if m["active"]]
@@ -152,7 +155,7 @@ class ReservationView(ctk.CTkFrame):
 
     # ------------------------------------------------------------------
     # Reserve / collect / cancel
-    # ------------------------------------------------------------------
+    # Reserve reserve.
     def reserve(self):
         try:
             member_val = self._resolve(self.member_entry, self._member_values, "member")
@@ -179,6 +182,7 @@ class ReservationView(ctk.CTkFrame):
                 text_color="#D17A67",
             )
 
+    # Collect collect.
     def collect(self, reservation_id: int):
         try:
             TransactionManager().collect_reservation(reservation_id)
@@ -187,6 +191,7 @@ class ReservationView(ctk.CTkFrame):
         except Exception as error:
             self.status.configure(text=f"Unable to process collection: {error}", text_color="#D17A67")
 
+    # Cancel cancel.
     def cancel(self, reservation_id: int):
         try:
             TransactionManager().cancel_reservation(reservation_id)
@@ -197,7 +202,7 @@ class ReservationView(ctk.CTkFrame):
 
     # ------------------------------------------------------------------
     # List + search
-    # ------------------------------------------------------------------
+    # Refresh refresh.
     def refresh(self):
         self.refresh_options()
         try:
@@ -207,15 +212,18 @@ class ReservationView(ctk.CTkFrame):
             self.status.configure(text=f"Unable to load reservations: {error}", text_color="#D17A67")
         self._render()
 
+    # Handle book searches.
     def on_search(self):
         self._render()
 
     @staticmethod
+    # Handle matches.
     def _matches(reservation: dict, query: str) -> bool:
         keys = ("title", "name", "isbn", "status", "member_id", "created_on")
         haystack = " ".join(str(reservation.get(k) or "") for k in keys).lower()
         return all(term in haystack for term in query.lower().split())
 
+    # Render render.
     def _render(self):
         self._search_job = None
         for widget in self.rows.winfo_children():
