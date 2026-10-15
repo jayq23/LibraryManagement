@@ -1,4 +1,4 @@
-"""Member management screen."""
+# Member management screen.
 
 import customtkinter as ctk
 
@@ -7,6 +7,7 @@ from utils.helpers import enable_mousewheel
 
 
 class MemberView(ctk.CTkFrame):
+    # Initialize the component.
     def __init__(self, master):
         super().__init__(master, fg_color="transparent")
 
@@ -65,6 +66,7 @@ class MemberView(ctk.CTkFrame):
         enable_mousewheel(self.rows)
         self.refresh()
 
+    # Add add member.
     def add_member(self):
         try:
             MemberManager().add_member(*(entry.get().strip() for entry in self.member_inputs.values()))
@@ -75,9 +77,11 @@ class MemberView(ctk.CTkFrame):
         except Exception as error:
             self.status.configure(text=f"Unable to add member: {error}", text_color="#D17A67")
 
+    # Handle book searches.
     def on_search(self):
         self.refresh(self.search_entry.get().strip())
 
+    # Refresh refresh.
     def refresh(self, query: str | None = None):
         for widget in self.rows.winfo_children():
             widget.destroy()
@@ -145,6 +149,7 @@ class MemberView(ctk.CTkFrame):
         except Exception as error:
             self.status.configure(text=f"Unable to load members: {error}", text_color="#D17A67")
 
+    # Handle deactivate.
     def deactivate(self, member_id: str):
         try:
             MemberManager().deactivate(member_id)
