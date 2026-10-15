@@ -1,4 +1,4 @@
-"""Database initialization entry point."""
+# Database initialization entry point.
 
 import os
 
@@ -8,8 +8,8 @@ from database.db_setup import create_schema
 from managers.auth_manager import AuthManager
 
 
+# Populate seed.
 def seed(database_url: str = DB_URL) -> None:
-    """Create the schema and ensure the administrator account exists."""
     create_schema(database_url)
     database = DatabaseManager(database_url)
     try:
