@@ -33,6 +33,7 @@ CORAL, CORAL_DIM = "#D17A67", "#8F5548"
 METRIC_KEYS = ("total_books", "active_loans", "overdue", "members")
 
 
+# Handle value.
 def _value(row, key, default=None):
     try:
         return row[key]
@@ -40,8 +41,8 @@ def _value(row, key, default=None):
         return default
 
 
+# Handle normalize activity.
 def normalize_activity(rows) -> list[dict]:
-    """Cleans monthly_activity() rows: safe numbers, short month labels, last N months only."""
     cleaned = []
     for row in rows or []:
         label = str(_value(row, "label", "") or "")
@@ -58,8 +59,8 @@ def normalize_activity(rows) -> list[dict]:
     return cleaned[-CHART_MONTHS:]
 
 
+# Handle nice axis.
 def nice_axis(max_value: float, intervals: int = 4) -> tuple[float, float]:
-    """Returns (step, axis_max) so the gridlines land on clean numbers."""
     if max_value <= 0:
         return 1, intervals
     magnitude = 10 ** math.floor(math.log10(max_value / intervals))
@@ -70,6 +71,7 @@ def nice_axis(max_value: float, intervals: int = 4) -> tuple[float, float]:
     return max_value / intervals, max_value
 
 
+# Handle peso.
 def peso(value: float) -> str:
     value = float(value)
     return f"₱{value:,.0f}" if value.is_integer() else f"₱{value:,.2f}"
@@ -79,8 +81,9 @@ def peso(value: float) -> str:
 # Chart widget
 # ----------------------------------------------------------------------
 class BarChart(ctk.CTkFrame):
-    """Card with a big total, a caption, and a clean monthly bar chart."""
+    # Card with a big total, a caption, and a clean monthly bar chart.
 
+    # Initialize the component.
     def __init__(self, master, title, caption, color, dim_color, label_format, axis_format):
         super().__init__(master, fg_color=CARD_BG, border_color=BORDER, border_width=1, corner_radius=10)
         self.color = color
@@ -105,14 +108,15 @@ class BarChart(ctk.CTkFrame):
         self.canvas.pack(fill="both", expand=True, padx=12, pady=(4, 12))
         self.canvas.bind("<Configure>", lambda _event: self.draw())
 
+    # Handle set data.
     def set_data(self, points: list[tuple[str, float]], total_text: str) -> None:
         self.points = points
         self.total_label.configure(text=total_text)
         self.draw()
 
     @staticmethod
+    # Handle bar.
     def _bar(canvas, x0, y0, x1, y1, fill, radius=6):
-        """Bar with rounded top corners and a flat bottom."""
         height = y1 - y0
         r = min(radius, (x1 - x0) / 2)
         if height <= r * 2:
@@ -123,6 +127,7 @@ class BarChart(ctk.CTkFrame):
         canvas.create_rectangle(x0 + r, y0, x1 - r, y0 + r + 1, fill=fill, outline="")
         canvas.create_rectangle(x0, y0 + r, x1, y1, fill=fill, outline="")
 
+    # Handle draw.
     def draw(self) -> None:
         canvas = self.canvas
         if not canvas.winfo_exists():
@@ -182,6 +187,7 @@ class BarChart(ctk.CTkFrame):
 # Dashboard window
 # ----------------------------------------------------------------------
 class Dashboard(ctk.CTkToplevel):
+    # Initialize the component.
     def __init__(self, login_window: ctk.CTk, user) -> None:
         super().__init__(login_window)
         self.login_window = login_window
@@ -263,6 +269,7 @@ class Dashboard(ctk.CTkToplevel):
         self.show_panel("Dashboard")
         self.refresh_job = self.after(SYNC_INTERVAL_MS, self.refresh_live_data)
 
+    # Handle greeting.
     def greeting(self) -> str:
         hour = datetime.now().hour
         if hour < 12:
@@ -271,6 +278,7 @@ class Dashboard(ctk.CTkToplevel):
             return "Good afternoon"
         return "Good evening"
 
+    # Show show panel.
     def show_panel(self, panel_name: str) -> None:
         self.active_panel = panel_name
         self.active_view = None
@@ -386,13 +394,14 @@ class Dashboard(ctk.CTkToplevel):
 
     # Dashboard data + live sync
     @staticmethod
+    # Fetch fetch dashboard data.
     def fetch_dashboard_data() -> tuple[dict, list[dict]]:
-        """Reads fresh numbers from the database. Raises if either query fails."""
         reporter = ReportManager()
         metrics = reporter.summary()
         activity = normalize_activity(reporter.monthly_activity())
         return metrics, activity
 
+    # Add add activity charts.
     def add_activity_charts(self) -> None:
         wrapper = ctk.CTkFrame(self.page_content, fg_color="transparent")
         wrapper.grid(row=3, column=0, sticky="nsew", pady=(24, 0))
@@ -416,8 +425,8 @@ class Dashboard(ctk.CTkToplevel):
         )
         self.fines_chart.grid(row=0, column=1, sticky="nsew", padx=(7, 0))
 
+    # Handle apply dashboard data.
     def apply_dashboard_data(self, metrics: dict, activity: list[dict]) -> None:
-        """Updates the cards and charts, but only when the database numbers actually changed."""
         snapshot = (
             tuple(_value(metrics, key, 0) for key in METRIC_KEYS),
             tuple((a["label"], a["loans"], a["fines"]) for a in activity),
@@ -438,8 +447,8 @@ class Dashboard(ctk.CTkToplevel):
             total_fines = sum(a["fines"] for a in activity)
             self.fines_chart.set_data([(a["label"], a["fines"]) for a in activity], peso(total_fines))
 
+    # Handle set sync status.
     def set_sync_status(self, ok: bool) -> None:
-        """Shows when the dashboard last synced, or that the sync is failing."""
         if ok:
             self.last_sync = datetime.now().strftime("%I:%M:%S %p").lstrip("0")
         label = self.subtitle_label
@@ -453,6 +462,7 @@ class Dashboard(ctk.CTkToplevel):
                 text_color="#D17A67",
             )
 
+    # Refresh refresh live data.
     def refresh_live_data(self):
         if not self.winfo_exists():
             return
@@ -460,6 +470,7 @@ class Dashboard(ctk.CTkToplevel):
             self.refresh_dashboard_data()
         self.refresh_job = self.after(SYNC_INTERVAL_MS, self.refresh_live_data)
 
+    # Refresh refresh dashboard data.
     def refresh_dashboard_data(self):
         try:
             metrics, activity = self.fetch_dashboard_data()
@@ -470,6 +481,7 @@ class Dashboard(ctk.CTkToplevel):
         self.apply_dashboard_data(metrics, activity)
         self.set_sync_status(True)
 
+    # Close close.
     def close(self) -> None:
         if self.refresh_job is not None:
             self.after_cancel(self.refresh_job)
