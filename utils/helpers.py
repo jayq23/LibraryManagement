@@ -1,14 +1,15 @@
-"""Date and display formatting helpers."""
+# Date and display formatting helpers.
 
 from datetime import date, timedelta
 
 
+# Calculate the loan due date.
 def due_date_from(start: date, loan_days: int = 14) -> date:
     return start + timedelta(days=loan_days)
 
 
+# Enable mouse-wheel scrolling.
 def enable_mousewheel(scroll_frame) -> None:
-    """Route wheel events to the scroll frame without replacing CustomTkinter bindings."""
     canvas = scroll_frame._parent_canvas
     root = scroll_frame.winfo_toplevel()
     canvases = getattr(root, "_library_scroll_canvases", [])
@@ -18,6 +19,7 @@ def enable_mousewheel(scroll_frame) -> None:
     if getattr(root, "_library_wheel_bound", False):
         return
 
+    # Scroll scroll.
     def scroll(event):
         delta = getattr(event, "delta", 0)
         if getattr(event, "num", None) == 4 or delta > 0:
