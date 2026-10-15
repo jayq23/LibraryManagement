@@ -1,4 +1,4 @@
-"""Reports screen with smooth refresh and scrollable fines list."""
+# Reports screen with smooth refresh and scrollable fines list.
 
 from decimal import Decimal, InvalidOperation
 
@@ -9,8 +9,8 @@ from managers.fine_manager import FineManager
 from utils.helpers import enable_mousewheel
 
 
+# Handle format peso.
 def format_peso(amount) -> str:
-    """Formats any numeric value (int, float, Decimal, numeric string) as pesos, e.g. ₱1,250.00."""
     try:
         return f"₱{Decimal(str(amount if amount is not None else 0)):,.2f}"
     except (InvalidOperation, ValueError):
@@ -18,6 +18,7 @@ def format_peso(amount) -> str:
 
 
 class ReportsView(ctk.CTkFrame):
+    # Initialize the component.
     def __init__(self, master):
         super().__init__(master, fg_color="transparent")
 
@@ -47,6 +48,7 @@ class ReportsView(ctk.CTkFrame):
 
         self.refresh()
 
+    # Refresh refresh.
     def refresh(self):
         # 1. Refresh Summary Stats
         for widget in self.panel.winfo_children():
@@ -109,6 +111,7 @@ class ReportsView(ctk.CTkFrame):
         except Exception as error:
             ctk.CTkLabel(self.fines_rows, text=f"Unable to load fines: {error}", text_color="#D17A67").pack(anchor="w", padx=12, pady=12)
 
+    # Handle pay fine.
     def pay_fine(self, fine_id: int):
         try:
             FineManager().pay(fine_id)
