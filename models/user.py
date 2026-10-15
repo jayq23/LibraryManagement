@@ -1,4 +1,4 @@
-"""User roles and identity models."""
+# User roles and identity models.
 
 from dataclasses import dataclass
 
@@ -10,10 +10,12 @@ class User:
 
 
 class Admin(User):
+    # Initialize the component.
     def __init__(self, username: str):
         super().__init__(username, "admin")
 
 
 class Librarian(User):
+    # Initialize the component.
     def __init__(self, username: str):
         super().__init__(username, "librarian")
