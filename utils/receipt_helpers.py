@@ -1,4 +1,4 @@
-"""Shared receipt helpers for the reservation and borrow panels."""
+# Shared receipt helpers for the reservation and borrow panels.
 
 from decimal import Decimal, InvalidOperation
 
@@ -7,8 +7,8 @@ from models.invoice import Invoice
 from utils.receipt_modal import ReceiptModal
 
 
+# Retrieve get book price.
 def get_book_price(isbn: str) -> Decimal:
-    """Returns the book's price, or 0.00 if the book is missing or the price is empty/invalid."""
     for book in BookManager().list_books():
         if book["isbn"] == isbn:
             try:
@@ -18,12 +18,9 @@ def get_book_price(isbn: str) -> Decimal:
     return Decimal("0.00")
 
 
+# Show show receipt.
 def show_receipt(master, title: str, prefix: str, number: int, member_id: str,
                  amount: Decimal, paid: bool = True) -> None:
-    """Builds an Invoice and opens the receipt modal.
-
-    Example: show_receipt(self, "Book Reservation Slip", "RES", reservation_id, member_id, price)
-    """
     invoice = Invoice(
         invoice_id=f"{prefix}-{int(number):05d}",
         member_id=member_id,
