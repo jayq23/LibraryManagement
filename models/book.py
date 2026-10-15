@@ -1,4 +1,4 @@
-"""Book models, including physical and electronic formats."""
+# Book models, including physical and electronic formats.
 
 from dataclasses import dataclass
 
