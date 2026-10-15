@@ -1,4 +1,4 @@
-"""Borrow and return transaction screen."""
+# Borrow and return transaction screen.
 
 from datetime import date, timedelta
 from decimal import Decimal
@@ -14,6 +14,7 @@ from utils.receipt_modal import ReceiptModal
 
 
 class BorrowReturnView(ctk.CTkFrame):
+    # Initialize the component.
     def __init__(self, master):
         super().__init__(master, fg_color="transparent")
         
@@ -76,6 +77,7 @@ class BorrowReturnView(ctk.CTkFrame):
         enable_mousewheel(self.rows)
         self.refresh()
 
+    # Refresh refresh options.
     def refresh_options(self):
         members = MemberManager().list_members()
         member_values = [f"{member['member_id']} - {member['name']}" for member in members if member["active"]]
@@ -92,10 +94,12 @@ class BorrowReturnView(ctk.CTkFrame):
         if book_values:
             self.book_entry.set(book_values[0])
 
+    # Handle book searches.
     def on_search(self):
         query = self.search_entry.get().strip()
         self.refresh(member_id_filter=query if query else None)
 
+    # Handle checkout.
     def checkout(self):
         try:
             member_id = self.member_entry.get().split(" - ", 1)[0].strip()
@@ -136,6 +140,7 @@ class BorrowReturnView(ctk.CTkFrame):
         except Exception as error:
             self.status.configure(text=f"Unable to checkout: {error}", text_color="#D17A67")
 
+    # Refresh refresh.
     def refresh(self, member_id_filter: str = None):
         self.refresh_options()
         for widget in self.rows.winfo_children():
@@ -185,6 +190,7 @@ class BorrowReturnView(ctk.CTkFrame):
         except Exception as error:
             self.status.configure(text=f"Unable to load loans: {error}", text_color="#D17A67")
 
+    # Return return book.
     def return_book(self, loan_id: int):
         try:
             result = TransactionManager().return_book(loan_id)
