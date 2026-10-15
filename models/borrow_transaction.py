@@ -1,4 +1,4 @@
-"""Borrowing and reservation transaction models."""
+# Borrowing and reservation transaction models.
 
 from dataclasses import dataclass
 from datetime import date
