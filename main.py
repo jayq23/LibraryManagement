@@ -1,10 +1,10 @@
-"""Application entry point."""
+# Application entry point.
 
 from gui.login_window import LoginWindow
 
 
+# Start the application.
 def main() -> None:
-	"""Launch the library management system."""
 	app = LoginWindow()
 	app.mainloop()
 
