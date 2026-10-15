@@ -5,6 +5,7 @@ from managers.fine_manager import FineManager
 
 
 class ReceiptModal(ctk.CTkToplevel):
+    # Initialize the component.
     def __init__(self, master, transaction_title: str, invoice: Invoice):
         super().__init__(master)
         
@@ -17,6 +18,7 @@ class ReceiptModal(ctk.CTkToplevel):
         self._build_details()
         self._build_actions()
 
+    # Handle configure window.
     def _configure_window(self):
         self.title("Transaction Receipt")
         self.geometry("380x460")
@@ -24,6 +26,7 @@ class ReceiptModal(ctk.CTkToplevel):
         self.configure(fg_color="#1B252E")
         self.attributes("-topmost", True)
 
+    # Build build header.
     def _build_header(self):
         ctk.CTkLabel(
             self, 
@@ -48,6 +51,7 @@ class ReceiptModal(ctk.CTkToplevel):
 
         ctk.CTkFrame(self, height=1, fg_color="#303D47").pack(fill="x", padx=20, pady=5)
 
+    # Build build details.
     def _build_details(self):
         details_frame = ctk.CTkFrame(self, fg_color="#202D37", corner_radius=8)
         details_frame.pack(fill="both", expand=True, padx=20, pady=12)
@@ -78,6 +82,7 @@ class ReceiptModal(ctk.CTkToplevel):
                 text_color="#2A9D9A" if key in ["Amount", "Status"] else "#A6B1B8"
             ).pack(side="right")
 
+    # Build build actions.
     def _build_actions(self):
         ctk.CTkButton(
             self, 
