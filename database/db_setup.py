@@ -1,4 +1,4 @@
-"""PostgreSQL schema creation entry point."""
+# PostgreSQL schema creation entry point.
 
 from config import DB_URL
 from database.db_manager import DatabaseManager
@@ -84,8 +84,8 @@ MIGRATIONS = (
 )
 
 
+# Create create schema.
 def create_schema(database_url: str = DB_URL) -> None:
-    """Create all application tables if they do not already exist."""
     database = DatabaseManager(database_url)
     try:
         for statement in SCHEMA:
