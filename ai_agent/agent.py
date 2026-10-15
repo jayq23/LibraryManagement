@@ -1,4 +1,4 @@
-"""Groq Agent Wrapper with Tool / Function Calling support."""
+# Groq Agent Wrapper with Tool / Function Calling support.
 
 import json
 import logging
@@ -295,6 +295,7 @@ TOOLS_SCHEMA = [
 
 
 class GroqAgent:
+    # Initialize the component.
     def __init__(self, model: str = "openai/gpt-oss-120b"):
         key = GROQ_API_KEY
         if not key or key == "your_groq_api_key_here":
@@ -303,8 +304,8 @@ class GroqAgent:
         self.client = Groq(api_key=key, timeout=REQUEST_TIMEOUT, max_retries=2)
         self.model = model
 
+    # Create create.
     def _create(self, messages: list[dict]):
-        """Calls the model. Retries once if Groq rejects a malformed tool call."""
         for attempt in range(2):
             try:
                 return self.client.chat.completions.create(
@@ -321,8 +322,8 @@ class GroqAgent:
                 raise
 
     @staticmethod
+    # Handle run tool.
     def _run_tool(call) -> str:
-        """Runs one tool call. Errors are returned to the model instead of crashing the reply."""
         handler = AVAILABLE_TOOLS.get(call.function.name)
         if handler is None:
             return f"Error: unknown tool '{call.function.name}'."
@@ -333,8 +334,8 @@ class GroqAgent:
             logger.warning("Tool %s failed: %s", call.function.name, error)
             return f"Error running tool: {error}"
 
+    # Generate generate response.
     def generate_response(self, messages: list[dict]) -> str:
-        """Returns the assistant reply. Raises on API failure; the caller handles it."""
         full_messages = [{"role": "system", "content": build_system_prompt()}] + messages
 
         for _ in range(MAX_TOOL_ROUNDS):
