@@ -1,1 +1,1 @@
-"""Fine manager tests."""
+# Fine manager tests.
