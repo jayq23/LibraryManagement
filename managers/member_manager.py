@@ -1,17 +1,20 @@
-"""Member business logic."""
+# Member business logic.
 
 from config import DB_URL
 from database.db_manager import DatabaseManager
 
 
 class MemberManager:
+    # Initialize the component.
     def __init__(self, database: DatabaseManager | None = None):
         self.database = database or DatabaseManager(DB_URL)
 
     @staticmethod
+    # Handle normalize id.
     def _normalize_id(member_id: str | None) -> str:
         return (member_id or "").strip().upper()
 
+    # List list members.
     def list_members(self) -> list[dict]:
         # ORDER BY member_id DESC so M005 -> M001
         rows = self.database.fetch_all(
@@ -27,14 +30,15 @@ class MemberManager:
             for row in rows
         ]
 
+    # Retrieve get member.
     def get_member(self, member_id: str):
         return self.database.fetch_one(
             "SELECT * FROM members WHERE member_id = :member_id",
             {"member_id": self._normalize_id(member_id)},
         )
 
+    # Handle next member id.
     def next_member_id(self) -> str:
-        """Returns the next free ID (e.g. M007) directly via PostgreSQL regex query."""
         row = self.database.fetch_one(
             "SELECT MAX(CAST(SUBSTRING(member_id FROM 2) AS INTEGER)) as max_num "
             "FROM members WHERE member_id ~ '^M[0-9]+$'"
@@ -42,8 +46,8 @@ class MemberManager:
         max_num = row["max_num"] if row and row["max_num"] is not None else 0
         return f"M{max_num + 1:03d}"
 
+    # Add add member.
     def add_member(self, member_id: str | None, name: str, email: str) -> str:
-        """Adds a member and returns the member ID. Pass None or '' to auto-generate the ID."""
         name = (name or "").strip()
         email = (email or "").strip().lower()
         if not name or not email:
@@ -65,6 +69,7 @@ class MemberManager:
         )
         return member_id
 
+    # Update update member.
     def update_member(self, member_id: str, name: str, email: str) -> None:
         member_id = self._normalize_id(member_id)
         name = (name or "").strip()
@@ -84,8 +89,8 @@ class MemberManager:
             {"member_id": member_id, "name": name, "email": email},
         )
 
+    # Delete delete member.
     def delete_member(self, member_id: str) -> None:
-        """Hard delete. Only allowed for members with no loan history; otherwise deactivate."""
         member_id = self._normalize_id(member_id)
         if not self.get_member(member_id):
             raise ValueError(f"Member '{member_id}' was not found.")
@@ -105,12 +110,15 @@ class MemberManager:
             {"member_id": member_id},
         )
 
+    # Handle deactivate.
     def deactivate(self, member_id: str) -> None:
         self._set_active(member_id, False)
 
+    # Handle reactivate.
     def reactivate(self, member_id: str) -> None:
         self._set_active(member_id, True)
 
+    # Handle set active.
     def _set_active(self, member_id: str, active: bool) -> None:
         member_id = self._normalize_id(member_id)
         if not self.get_member(member_id):
