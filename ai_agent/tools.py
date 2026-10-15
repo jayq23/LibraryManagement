@@ -1,4 +1,4 @@
-"""Tool functions the AI agent is authorized to call."""
+# Tool functions the AI agent is authorized to call.
 
 import logging
 import re
@@ -18,31 +18,32 @@ EMAIL_PATTERN = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 BORROW_DAYS = 14  # same default loan period as the Borrow / Return panel
 
 
+# Handle text.
 def _text(value) -> str:
-    """None-safe string conversion."""
     return str(value or "")
 
 
+# Handle norm id.
 def _norm_id(member_id: str) -> str:
     return _text(member_id).strip().upper()
 
 
+# Handle unexpected.
 def _unexpected(action: str, error: Exception) -> str:
-    """Logs the real error and returns a friendly message for the model/user."""
     logger.error("Tool failure while %s", action, exc_info=error)
     return f"Something went wrong while {action}. Please try again or use the GUI panel."
 
 
+# Handle price.
 def _price(book: dict | None) -> Decimal:
-    """Book price as Decimal, 0.00 if missing or invalid."""
     try:
         return Decimal(str((book or {}).get("price") or "0.00"))
     except InvalidOperation:
         return Decimal("0.00")
 
 
+# Retrieve get book info.
 def get_book_info(keyword: str) -> str:
-    """Searches for books by title, author, or ISBN and returns details including shelf location and copies."""
     try:
         kw = _text(keyword).strip().lower()
         if not kw:
@@ -72,8 +73,8 @@ def get_book_info(keyword: str) -> str:
         return _unexpected("fetching book details", error)
 
 
+# Check check member status.
 def check_member_status(member_id: str) -> str:
-    """Fetches active loans, reservations, and member details for a given member ID."""
     try:
         member_id = _norm_id(member_id)
         member = MemberManager().get_member(member_id)
@@ -110,8 +111,8 @@ def check_member_status(member_id: str) -> str:
         return _unexpected("checking member status", error)
 
 
+# List list active members.
 def list_active_members() -> str:
-    """Lists all active registered library members."""
     try:
         members = MemberManager().list_members()
         active_list = [m for m in members if m.get("active")]
@@ -125,8 +126,8 @@ def list_active_members() -> str:
         return _unexpected("retrieving active members", error)
 
 
+# Check check library summary.
 def check_library_summary() -> str:
-    """Returns total summary metrics of the library."""
     try:
         stats = ReportManager().summary()
         return (
@@ -140,8 +141,8 @@ def check_library_summary() -> str:
         return _unexpected("loading summary metrics", error)
 
 
+# Add add member.
 def add_member(name: str, email: str) -> str:
-    """Registers a new member. The member ID (e.g. M007) is generated automatically."""
     try:
         name = _text(name).strip()
         email = _text(email).strip().lower()
@@ -159,8 +160,8 @@ def add_member(name: str, email: str) -> str:
         return _unexpected("adding the member", error)
 
 
+# Borrow borrow book.
 def borrow_book(member_id: str, isbn_or_title: str) -> str:
-    """Creates a new borrow transaction (loan) for a member using member ID and book ISBN/title."""
     try:
         member_id = _norm_id(member_id)
         member = MemberManager().get_member(member_id)
@@ -195,8 +196,8 @@ def borrow_book(member_id: str, isbn_or_title: str) -> str:
         return _unexpected("processing book borrow", error)
 
 
+# Reserve reserve book.
 def reserve_book(member_id: str, isbn_or_title: str) -> str:
-    """Reserves a book for a member using their member ID and the book's title or ISBN."""
     try:
         member_id = _norm_id(member_id)
         member = MemberManager().get_member(member_id)
@@ -239,8 +240,8 @@ def reserve_book(member_id: str, isbn_or_title: str) -> str:
         return _unexpected("reserving the book", error)
 
 
+# Cancel cancel reservation.
 def cancel_reservation(reservation_id: int) -> str:
-    """Cancels an active reservation using its reservation ID."""
     try:
         TransactionManager().cancel_reservation(reservation_id)
         return f"Reservation #{reservation_id} was successfully canceled."
@@ -250,8 +251,8 @@ def cancel_reservation(reservation_id: int) -> str:
         return _unexpected("canceling reservation", error)
 
 
+# Collect collect reservation.
 def collect_reservation(reservation_id: int) -> str:
-    """Marks an active reservation as collected."""
     try:
         try:
             res_id = int(reservation_id)
@@ -274,8 +275,8 @@ def collect_reservation(reservation_id: int) -> str:
         return _unexpected("collecting the reservation", error)
 
 
+# Add add book copies.
 def add_book_copies(isbn_or_title: str, quantity: int) -> str:
-    """Adds inventory copies to an existing book in the catalog using title or ISBN."""
     try:
         kw = _text(isbn_or_title).strip().lower()
         if not kw:
@@ -299,8 +300,8 @@ def add_book_copies(isbn_or_title: str, quantity: int) -> str:
         return _unexpected("adding copies to inventory", error)
 
 
+# Return return book.
 def return_book(loan_id: int) -> str:
-    """Processes the return of a borrowed book using its loan ID."""
     try:
         result = TransactionManager().return_book(loan_id)
         msg = f"Loan #{loan_id} returned successfully."
@@ -323,8 +324,8 @@ def return_book(loan_id: int) -> str:
         return _unexpected("returning the book", error)
 
 
+# Collect collect fine.
 def collect_fine(member_id: str, amount: float) -> str:
-    """Processes payment for outstanding unpaid fines for a member."""
     try:
         member_id = _norm_id(member_id)
         member = MemberManager().get_member(member_id)
@@ -341,8 +342,8 @@ def collect_fine(member_id: str, amount: float) -> str:
         return _unexpected("collecting fine payment", error)
 
 
+# Retrieve get book reservations.
 def get_book_reservations(isbn_or_title: str) -> str:
-    """Lists members who have an active reservation for a book (by title or ISBN)."""
     try:
         kw = _text(isbn_or_title).strip().lower()
         if not kw:
@@ -368,8 +369,8 @@ def get_book_reservations(isbn_or_title: str) -> str:
         return _unexpected("searching reservations", error)
 
 
+# List list all active reservations.
 def list_all_active_reservations() -> str:
-    """Lists all active book reservations across all members in the entire library system."""
     try:
         reservations = [
             r for r in TransactionManager().list_reservations()
@@ -390,8 +391,8 @@ def list_all_active_reservations() -> str:
         return _unexpected("retrieving all active reservations", error)
 
 
+# List list categories.
 def list_categories() -> str:
-    """Returns a list of all active book categories in the library."""
     try:
         categories = CategoryManager().list_categories()
         names = [c.get("name") for c in categories if c.get("name")]
