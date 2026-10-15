@@ -1,1 +1,1 @@
-"""Transaction manager tests."""
+# Transaction manager tests.
