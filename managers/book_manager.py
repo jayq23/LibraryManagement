@@ -1,25 +1,29 @@
-"""Book catalog business logic."""
+# Book catalog business logic.
 
 from config import DB_URL
 from database.db_manager import DatabaseManager
 
 
 class BookManager:
+	# Initialize the component.
 	def __init__(self, database: DatabaseManager | None = None):
 		self.database = database or DatabaseManager(DB_URL)
 
+	# List list books.
 	def list_books(self) -> list[dict]:
 		return self.database.fetch_all(
 			"SELECT books.*, categories.name AS category_name FROM books "
 			"LEFT JOIN categories ON categories.id = books.category_id ORDER BY books.title"
 		)
 
+	# Search search.
 	def search(self, query: str = "") -> list[dict]:
 		return self.database.fetch_all(
 			"SELECT * FROM books WHERE title ILIKE :query OR author ILIKE :query OR isbn ILIKE :query ORDER BY title",
 			{"query": f"%{query.strip()}%"},
 		)
 
+	# Add a book to the catalog.
 	def add_book(self, isbn: str, title: str, author: str, shelf_location: str = "", copies: int = 1, category_id: int | None = None, price: float = 0) -> None:
 		if copies < 1:
 			raise ValueError("Copies must be positive")
@@ -31,6 +35,7 @@ class BookManager:
 			{"isbn": isbn, "title": title, "author": author, "shelf": shelf_location, "category_id": category_id, "price": price, "copies": copies},
 		)
 
+	# Update update book.
 	def update_book(self, isbn: str, title: str, author: str, shelf_location: str, copies: int) -> None:
 		if copies < 1:
 			raise ValueError("Copies must be positive")
@@ -46,17 +51,20 @@ class BookManager:
 			{"isbn": isbn, "title": title, "author": author, "shelf": shelf_location, "copies": copies, "borrowed": borrowed},
 		)
 
+	# Delete a book from the catalog.
 	def delete_book(self, isbn: str) -> None:
 		if self.database.fetch_one("SELECT 1 FROM loans WHERE isbn = :isbn AND returned_on IS NULL", {"isbn": isbn}):
 			raise ValueError("Book has an active loan")
 		self.database.execute("DELETE FROM books WHERE isbn = :isbn", {"isbn": isbn})
 
+	# Handle availability.
 	def availability(self, isbn: str) -> int:
 		book = self.database.fetch_one("SELECT available_copies FROM books WHERE isbn = :isbn", {"isbn": isbn})
 		if not book:
 			raise ValueError("Book not found")
 		return book["available_copies"]
 
+	# Add copies to inventory.
 	def add_copies(self, isbn: str, quantity: int) -> None:
 		if quantity < 1:
 			raise ValueError("Quantity must be positive")
