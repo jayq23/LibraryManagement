@@ -1,4 +1,4 @@
-"""Borrower profile model."""
+# Borrower profile model.
 
 from dataclasses import dataclass
 
