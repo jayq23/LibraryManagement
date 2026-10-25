@@ -20,6 +20,7 @@ from ai_agent.tools import (
     get_book_reservations,
     list_active_members,
     list_all_active_reservations,
+    list_inactive_members,
     list_categories,
     reserve_book,
     return_book,
@@ -36,6 +37,7 @@ AVAILABLE_TOOLS = {
     "get_book_info": get_book_info,
     "check_member_status": check_member_status,
     "list_active_members": list_active_members,
+    "list_inactive_members": list_inactive_members,
     "check_library_summary": check_library_summary,
     "get_book_reservations": get_book_reservations,
     "list_all_active_reservations": list_all_active_reservations,
@@ -91,6 +93,14 @@ TOOLS_SCHEMA = [
         "function": {
             "name": "list_active_members",
             "description": "Retrieves the list of all active registered members in the library.",
+            "parameters": {"type": "object", "properties": {}},
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "list_inactive_members",
+            "description": "Retrieves the list of all inactive registered members in the library.",
             "parameters": {"type": "object", "properties": {}},
         },
     },
