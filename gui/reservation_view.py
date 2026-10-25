@@ -6,10 +6,14 @@ from managers.book_manager import BookManager
 from managers.member_manager import MemberManager
 from managers.transaction_manager import TransactionManager
 from utils.helpers import enable_mousewheel
+from utils.pager import Pager
 from utils.receipt_helpers import get_book_price, show_receipt
+from utils.search import matches_search
 
 
 class ReservationView(ctk.CTkFrame):
+    PAGE_SIZE = 10  # Reservation rows built per page.
+
     # Initialize the component.
     def __init__(self, master):
         super().__init__(master, fg_color="transparent")
@@ -17,7 +21,6 @@ class ReservationView(ctk.CTkFrame):
         self._member_values: list[str] = []
         self._book_values: list[str] = []
         self._reservations: list[dict] = []
-        self._search_job = None
 
         # --- Reservation Form ---
         form = ctk.CTkFrame(self, fg_color="#1B252E", border_color="#303D47", border_width=1, corner_radius=10)
@@ -75,9 +78,14 @@ class ReservationView(ctk.CTkFrame):
         self.status = ctk.CTkLabel(self, text="", text_color="#9AA7B0")
         self.status.pack(anchor="w", pady=(0, 6))
 
+        # Page controls (packed before the list so they always stay visible at the bottom).
+        self.pager = Pager(self, on_change=self._render, page_size=self.PAGE_SIZE)
+        self.pager.pack(side="bottom", fill="x", pady=(8, 0))
+
         # --- Reservations Scrollable List ---
         self.rows = ctk.CTkScrollableFrame(self, fg_color="#1B252E", border_color="#303D47", border_width=1, corner_radius=10)
         self.rows.pack(fill="both", expand=True)
+        self.pager.scroll_target = self.rows
 
         enable_mousewheel(self.rows)
 
@@ -110,10 +118,9 @@ class ReservationView(ctk.CTkFrame):
     @staticmethod
     # Filter filter.
     def _filter(values: list[str], typed: str) -> list[str]:
-        typed = typed.strip().lower()
-        if not typed:
+        if not typed.strip():
             return values
-        return [v for v in values if typed in v.lower()]
+        return [v for v in values if matches_search(v, typed)]
 
     # Handle resolve.
     def _resolve(self, combo: ctk.CTkComboBox, values: list[str], label: str) -> str:
@@ -155,6 +162,7 @@ class ReservationView(ctk.CTkFrame):
 
     # ------------------------------------------------------------------
     # Reserve / collect / cancel
+    # (None of these change the member or book lists, so they only reload the reservations.)
     # Reserve reserve.
     def reserve(self):
         try:
@@ -166,7 +174,8 @@ class ReservationView(ctk.CTkFrame):
 
             reservation_id = TransactionManager().reserve(member_id, isbn)
             self.status.configure(text=f"Reservation #{reservation_id} created.", text_color="#2A9D9A")
-            self.refresh()
+            self.pager.reset()  # Newest reservations sort to the top.
+            self._reload()
         except Exception as error:
             self.status.configure(text=f"Unable to reserve book: {error}", text_color="#D17A67")
             return
@@ -187,7 +196,7 @@ class ReservationView(ctk.CTkFrame):
         try:
             TransactionManager().collect_reservation(reservation_id)
             self.status.configure(text="Reservation marked as collected.", text_color="#2A9D9A")
-            self.refresh()
+            self._reload()
         except Exception as error:
             self.status.configure(text=f"Unable to process collection: {error}", text_color="#D17A67")
 
@@ -196,15 +205,19 @@ class ReservationView(ctk.CTkFrame):
         try:
             TransactionManager().cancel_reservation(reservation_id)
             self.status.configure(text="Reservation cancelled.", text_color="#2A9D9A")
-            self.refresh()
+            self._reload()
         except Exception as error:
             self.status.configure(text=f"Unable to cancel reservation: {error}", text_color="#D17A67")
 
     # ------------------------------------------------------------------
     # List + search
-    # Refresh refresh.
+    # Refresh everything: dropdown options and the reservation list.
     def refresh(self):
         self.refresh_options()
+        self._reload()
+
+    # Reload only the reservations, then redraw the current page.
+    def _reload(self):
         try:
             self._reservations = TransactionManager().list_reservations()
         except Exception as error:
@@ -212,27 +225,27 @@ class ReservationView(ctk.CTkFrame):
             self.status.configure(text=f"Unable to load reservations: {error}", text_color="#D17A67")
         self._render()
 
-    # Handle book searches.
+    # Handle reservation searches.
     def on_search(self):
+        self.pager.reset()
         self._render()
 
     @staticmethod
     # Handle matches.
     def _matches(reservation: dict, query: str) -> bool:
         keys = ("title", "name", "isbn", "status", "member_id", "created_on")
-        haystack = " ".join(str(reservation.get(k) or "") for k in keys).lower()
-        return all(term in haystack for term in query.lower().split())
+        haystack = " ".join(str(reservation.get(k) or "") for k in keys)
+        return matches_search(haystack, query)
 
-    # Render render.
+    # Render only the current page of (filtered) reservations.
     def _render(self):
-        self._search_job = None
         for widget in self.rows.winfo_children():
             widget.destroy()
 
         query = self.search_entry.get().strip()
         reservations = [r for r in self._reservations if self._matches(r, query)] if query else self._reservations
 
-        for reservation in reservations:
+        for reservation in self.pager.slice(reservations):
             row = ctk.CTkFrame(self.rows, fg_color="#202D37", border_color="#344650", border_width=1, corner_radius=7)
             row.pack(fill="x", pady=4)
             row.grid_columnconfigure(0, weight=1)
