@@ -4,14 +4,14 @@ from datetime import date, timedelta
 
 from sqlalchemy import text
 
-from config import DB_URL
 from database.db_manager import DatabaseManager
+from database.shared import get_database
 
 
 class TransactionManager:
     # Initialize the component.
     def __init__(self, database: DatabaseManager | None = None, loan_days: int = 14, fine_per_day: float = 10.0):
-        self.database = database or DatabaseManager(DB_URL)
+        self.database = database or get_database()
         self.loan_days = loan_days
         self.fine_per_day = fine_per_day  # ₱10 per day late, adjust as needed
 
