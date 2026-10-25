@@ -5,16 +5,21 @@ import customtkinter as ctk
 from managers.book_manager import BookManager
 from managers.category_manager import CategoryManager
 from utils.helpers import enable_mousewheel
+from utils.pager import Pager
+from utils.search import matches_search
 
 
 class BookCatalogView(ctk.CTkFrame):
     # Display and manage the library's book catalog.
+
+    PAGE_SIZE = 10  # Rows built per page; keeps the screen fast with 1,000+ books.
 
     # Initialize the component.
     def __init__(self, master):
         super().__init__(master, fg_color="transparent")
 
         self.category_map = {}  # Maps category names to their database IDs.
+        self._books: list[dict] = []
 
         # Book entry form.
         form = ctk.CTkFrame(self, fg_color="#1B252E", border_color="#303D47", border_width=1, corner_radius=10)
@@ -43,17 +48,15 @@ class BookCatalogView(ctk.CTkFrame):
         self.category_entry.grid(row=0, column=6, sticky="ew", padx=3, pady=10)
 
         ctk.CTkButton(
-            form, 
-            text="Add title", 
-            command=self.add_book, 
-            width=92, 
-            height=34, 
-            corner_radius=7, 
-            fg_color="#2A9D9A", 
+            form,
+            text="Add title",
+            command=self.add_book,
+            width=92,
+            height=34,
+            corner_radius=7,
+            fg_color="#2A9D9A",
             hover_color="#21817F"
         ).grid(row=0, column=7, padx=(3, 10), pady=10)
-
-        self.refresh_categories()
 
         # Inventory restocking form.
         restock_form = ctk.CTkFrame(self, fg_color="#1B252E", border_color="#303D47", border_width=1, corner_radius=10)
@@ -66,13 +69,13 @@ class BookCatalogView(ctk.CTkFrame):
         self.quantity_entry.pack(side="left", padx=6, pady=10)
 
         ctk.CTkButton(
-            restock_form, 
-            text="Add copies", 
-            command=self.add_copies, 
-            width=100, 
-            height=34, 
-            corner_radius=7, 
-            fg_color="#253540", 
+            restock_form,
+            text="Add copies",
+            command=self.add_copies,
+            width=100,
+            height=34,
+            corner_radius=7,
+            fg_color="#253540",
             hover_color="#344650"
         ).pack(side="left", padx=(3, 10), pady=10)
 
@@ -99,19 +102,24 @@ class BookCatalogView(ctk.CTkFrame):
         self.status = ctk.CTkLabel(self, text="", text_color="#9AA7B0")
         self.status.pack(anchor="w", pady=(4, 14))
 
+        # Page controls (packed before the list so they always stay visible at the bottom).
+        self.pager = Pager(self, on_change=self._render, page_size=self.PAGE_SIZE)
+        self.pager.pack(side="bottom", fill="x", pady=(8, 0))
+
         # Scrollable catalog list.
         self.rows = ctk.CTkScrollableFrame(self, fg_color="#1B252E", border_color="#303D47", border_width=1, corner_radius=10)
         self.rows.pack(fill="both", expand=True)
+        self.pager.scroll_target = self.rows
 
         enable_mousewheel(self.rows)
         self.refresh()
 
-    # Refresh restock book options.
-    def refresh_restock_books(self):
-        books = BookManager().list_books()
+    # Refresh restock book options (reuses the books already loaded, no extra query).
+    def refresh_restock_books(self, books: list[dict]):
         values = [f"{book['isbn']} - {book['title']}" for book in books]
+        current = self.restock_entry.get()
         self.restock_entry.configure(values=values or ["No books"])
-        self.restock_entry.set(values[0] if values else "No books")
+        self.restock_entry.set(current if current in values else (values[0] if values else "No books"))
 
     # Refresh category options.
     def refresh_categories(self):
@@ -119,66 +127,83 @@ class BookCatalogView(ctk.CTkFrame):
         self.category_map = {cat["name"]: cat.get("category_id") or cat.get("id") for cat in categories}
         cat_names = list(self.category_map.keys())
 
+        current = self.category_entry.get()
         self.category_entry.configure(values=cat_names or ["No category"])
-        self.category_entry.set(cat_names[0] if cat_names else "No category")
+        self.category_entry.set(current if current in cat_names else (cat_names[0] if cat_names else "No category"))
 
     # Handle book searches.
     def on_search(self):
-        self.refresh(self.search_entry.get().strip())
+        self.pager.reset()
+        self._render()
 
-    # Refresh refresh.
-    def refresh(self, query: str | None = None):
+    # Clear the rows currently on screen.
+    def _clear_rows(self):
         for widget in self.rows.winfo_children():
             widget.destroy()
 
+    # Reload books and categories once, then redraw the current page.
+    def refresh(self):
         try:
-            self.refresh_restock_books()
+            self._books = BookManager().list_books()
+            self.refresh_restock_books(self._books)
             self.refresh_categories()
-            books = BookManager().list_books()
-            query = self.search_entry.get().strip() if query is None else query
+        except Exception as error:
+            self._books = []
+            self._clear_rows()
+            self.status.configure(text=f"Unable to load catalog: {error}", text_color="#D17A67")
+            return
+        self._render()
+
+    # Draw only the current page of (filtered) books.
+    def _render(self):
+        self._clear_rows()
+
+        try:
+            books = self._books
+            query = self.search_entry.get().strip()
             if query:
                 books = [
                     book for book in books
-                    if all(
-                        term in " ".join(
+                    if matches_search(
+                        " ".join(
                             str(book.get(key) or "")
                             for key in ("isbn", "title", "author", "shelf_location", "category_name")
-                        ).lower()
-                        for term in query.lower().split()
+                        ),
+                        query,
                     )
                 ]
 
-            for book in books:
+            for book in self.pager.slice(books):
                 row = ctk.CTkFrame(self.rows, fg_color="#202D37", border_color="#344650", border_width=1, corner_radius=7)
                 row.pack(fill="x", pady=4)
                 row.grid_columnconfigure(0, weight=1)
 
                 ctk.CTkLabel(
-                    row, 
-                    text=book["title"], 
-                    text_color="#E8EDF0", 
-                    font=ctk.CTkFont(size=13, weight="bold"), 
+                    row,
+                    text=book["title"],
+                    text_color="#E8EDF0",
+                    font=ctk.CTkFont(size=13, weight="bold"),
                     anchor="w"
                 ).grid(row=0, column=0, sticky="ew", padx=(14, 8), pady=(8, 1))
 
                 category = book.get("category_name") or "Uncategorized"
                 ctk.CTkLabel(
-                    row, 
-                    text=f"{book['author']}  ·  ISBN {book['isbn']}  ·  Shelf {book['shelf_location'] or 'Not assigned'}  ·  {category}  ·  ₱{book['price']}  ·  {book['available_copies']} available", 
-                    text_color="#A6B1B8", 
+                    row,
+                    text=f"{book['author']}  ·  ISBN {book['isbn']}  ·  Shelf {book['shelf_location'] or 'Not assigned'}  ·  {category}  ·  ₱{book['price']}  ·  {book['available_copies']} available",
+                    text_color="#A6B1B8",
                     anchor="w"
                 ).grid(row=1, column=0, sticky="ew", padx=(14, 8), pady=(0, 8))
 
                 ctk.CTkButton(
-                    row, 
-                    text="Delete", 
-                    command=lambda isbn=book["isbn"]: self.delete_book(isbn), 
-                    width=64, 
-                    height=26, 
-                    corner_radius=6, 
-                    fg_color="transparent", 
-                    border_width=1, 
-                    border_color="#59636A", 
+                    row,
+                    text="Delete",
+                    command=lambda isbn=book["isbn"]: self.delete_book(isbn),
+                    width=64,
+                    height=26,
+                    corner_radius=6,
+                    fg_color="transparent",
+                    border_width=1,
+                    border_color="#59636A",
                     hover_color="#4A3030"
                 ).grid(row=0, rowspan=2, column=1, padx=(4, 10), pady=8)
 
@@ -186,7 +211,11 @@ class BookCatalogView(ctk.CTkFrame):
                 message = f"No books match '{query}'." if query else "No titles found in catalog."
                 ctk.CTkLabel(self.rows, text=message, text_color="#A6B1B8").pack(anchor="w", pady=16)
 
-            self.status.configure(text=f"{len(books)} titles available in catalog.", text_color="#9AA7B0")
+            if query:
+                summary = f"{len(books)} of {len(self._books)} titles match '{query}'."
+            else:
+                summary = f"{len(books)} titles available in catalog."
+            self.status.configure(text=summary, text_color="#9AA7B0")
         except Exception as error:
             self.status.configure(text=f"Unable to load catalog: {error}", text_color="#D17A67")
 
@@ -197,12 +226,12 @@ class BookCatalogView(ctk.CTkFrame):
             category_id = self.category_map.get(selected_cat_name)
 
             BookManager().add_book(
-                self.inputs["ISBN"].get().strip(), 
-                self.inputs["Title"].get().strip(), 
-                self.inputs["Author"].get().strip(), 
-                self.inputs["Shelf"].get().strip(), 
-                int(self.inputs["Copies"].get() or "1"), 
-                category_id, 
+                self.inputs["ISBN"].get().strip(),
+                self.inputs["Title"].get().strip(),
+                self.inputs["Author"].get().strip(),
+                self.inputs["Shelf"].get().strip(),
+                int(self.inputs["Copies"].get() or "1"),
+                category_id,
                 float(self.inputs["Price"].get() or "0")
             )
             for entry in self.inputs.values():
@@ -222,7 +251,7 @@ class BookCatalogView(ctk.CTkFrame):
             err_msg = str(error).lower()
             if "foreign key constraint" in err_msg or "loans_isbn_fkey" in err_msg:
                 self.status.configure(
-                    text="Cannot delete title: This book has existing borrowing or loan records.", 
+                    text="Cannot delete title: This book has existing borrowing or loan records.",
                     text_color="#D17A67"
                 )
             else:
@@ -234,7 +263,7 @@ class BookCatalogView(ctk.CTkFrame):
             isbn = self.restock_entry.get().split(" - ", 1)[0].strip()
             BookManager().add_copies(isbn, int(self.quantity_entry.get() or "0"))
             self.quantity_entry.delete(0, "end")
-            self.status.configure(text="Copies added to inventory.", text_color="#2A9D9A")
             self.refresh()
+            self.status.configure(text="Copies added to inventory.", text_color="#2A9D9A")
         except Exception as error:
             self.status.configure(text=f"Unable to add copies: {error}", text_color="#D17A67")
