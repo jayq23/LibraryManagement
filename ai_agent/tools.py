@@ -11,6 +11,7 @@ from managers.category_manager import CategoryManager
 from managers.member_manager import MemberManager
 from managers.report_manager import ReportManager
 from managers.transaction_manager import TransactionManager
+from utils.search import matches_search, normalize_search_text
 
 logger = logging.getLogger(__name__)
 
@@ -26,6 +27,25 @@ def _text(value) -> str:
 # Handle norm id.
 def _norm_id(member_id: str) -> str:
     return _text(member_id).strip().upper()
+
+
+# Remove presentation markers that can be copied from an assistant response into a tool call.
+def _clean_lookup_text(value) -> str:
+    return _text(value).strip().strip("*_~`\"'")
+
+
+def _find_books(books: list[dict], lookup: str) -> list[dict]:
+    normalized_lookup = normalize_search_text(_clean_lookup_text(lookup))
+    exact = [
+        book for book in books
+        if normalize_search_text(book.get("isbn")) == normalized_lookup
+    ]
+    return exact or [
+        book for book in books
+        if matches_search(book.get("title"), lookup)
+        or matches_search(book.get("author"), lookup)
+        or matches_search(book.get("isbn"), lookup)
+    ]
 
 
 # Handle unexpected.
@@ -45,16 +65,10 @@ def _price(book: dict | None) -> Decimal:
 # Retrieve get book info.
 def get_book_info(keyword: str) -> str:
     try:
-        kw = _text(keyword).strip().lower()
-        if not kw:
+        if not _clean_lookup_text(keyword):
             return "Please provide a title, author, or ISBN to search for."
 
-        matched = [
-            b for b in BookManager().list_books()
-            if kw in _text(b.get("title")).lower()
-            or kw in _text(b.get("author")).lower()
-            or kw in _text(b.get("isbn")).lower()
-        ]
+        matched = _find_books(BookManager().list_books(), keyword)
 
         if not matched:
             return f"No books found matching '{keyword}'."
@@ -63,8 +77,8 @@ def get_book_info(keyword: str) -> str:
         for book in matched:
             results.append(
                 f"Title: {book.get('title')} | Author: {book.get('author')} | "
-                f"ISBN: {book.get('isbn')} | Category: {book.get('category') or 'N/A'} | "
-                f"Shelf Location: {book.get('shelf') or 'General Section'} | "
+                f"ISBN: {book.get('isbn')} | Category: {book.get('category_name') or 'N/A'} | "
+                f"Shelf Location: {book.get('shelf_location') or 'General Section'} | "
                 f"Available Copies: {book.get('available_copies', 0)}/{book.get('total_copies', 0)} | "
                 f"Price: ₱{book.get('price') or '0.00'}"
             )
@@ -126,6 +140,21 @@ def list_active_members() -> str:
         return _unexpected("retrieving active members", error)
 
 
+# List inactive members.
+def list_inactive_members() -> str:
+    try:
+        members = MemberManager().list_members()
+        inactive_list = [m for m in members if not m.get("active")]
+
+        if not inactive_list:
+            return "There are currently no inactive registered members."
+
+        lines = [f"- {m['member_id']} - {m['name']} ({m['email']})" for m in inactive_list]
+        return "Inactive Library Members:\n" + "\n".join(lines)
+    except Exception as error:
+        return _unexpected("retrieving inactive members", error)
+
+
 # Check check library summary.
 def check_library_summary() -> str:
     try:
@@ -170,13 +199,11 @@ def borrow_book(member_id: str, isbn_or_title: str) -> str:
         if not member["active"]:
             return f"Member {member_id} is inactive and cannot borrow books."
 
-        kw = _text(isbn_or_title).strip().lower()
-        if not kw:
+        if not _clean_lookup_text(isbn_or_title):
             return "Please provide a book title or ISBN."
 
         books = BookManager().list_books()
-        exact = [b for b in books if kw == _text(b.get("isbn")).lower()]
-        matches = exact or [b for b in books if kw in _text(b.get("title")).lower()]
+        matches = _find_books(books, isbn_or_title)
 
         if not matches:
             return f"Book '{isbn_or_title}' was not found in the catalog."
@@ -206,13 +233,11 @@ def reserve_book(member_id: str, isbn_or_title: str) -> str:
         if not member["active"]:
             return f"Member {member_id} is inactive and cannot reserve books."
 
-        kw = _text(isbn_or_title).strip().lower()
-        if not kw:
+        if not _clean_lookup_text(isbn_or_title):
             return "Please provide a book title or ISBN."
 
         books = BookManager().list_books()
-        exact = [b for b in books if kw == _text(b.get("isbn")).lower()]
-        matches = exact or [b for b in books if kw in _text(b.get("title")).lower()]
+        matches = _find_books(books, isbn_or_title)
 
         if not matches:
             return f"Book '{isbn_or_title}' was not found in the catalog."
@@ -278,15 +303,13 @@ def collect_reservation(reservation_id: int) -> str:
 # Add add book copies.
 def add_book_copies(isbn_or_title: str, quantity: int) -> str:
     try:
-        kw = _text(isbn_or_title).strip().lower()
-        if not kw:
+        if not _clean_lookup_text(isbn_or_title):
             return "Please provide a book title or ISBN."
         if quantity <= 0:
             return "Quantity to add must be greater than 0."
 
         books = BookManager().list_books()
-        exact = [b for b in books if kw == _text(b.get("isbn")).lower()]
-        matches = exact or [b for b in books if kw in _text(b.get("title")).lower()]
+        matches = _find_books(books, isbn_or_title)
 
         if not matches:
             return f"Book '{isbn_or_title}' was not found in the catalog."
@@ -345,14 +368,17 @@ def collect_fine(member_id: str, amount: float) -> str:
 # Retrieve get book reservations.
 def get_book_reservations(isbn_or_title: str) -> str:
     try:
-        kw = _text(isbn_or_title).strip().lower()
-        if not kw:
+        if not _clean_lookup_text(isbn_or_title):
             return "Please provide a book title or ISBN."
 
         matched = [
             r for r in TransactionManager().list_reservations()
             if r.get("status") == "active"
-            and (kw == _text(r.get("isbn")).lower() or kw in _text(r.get("title")).lower())
+            and (
+                normalize_search_text(r.get("isbn"))
+                == normalize_search_text(_clean_lookup_text(isbn_or_title))
+                or matches_search(r.get("title"), isbn_or_title)
+            )
         ]
 
         if not matched:
