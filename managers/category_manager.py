@@ -1,13 +1,13 @@
 # Category and genre business logic.
 
-from config import DB_URL
 from database.db_manager import DatabaseManager
+from database.shared import get_database
 
 
 class CategoryManager:
 	# Initialize the component.
 	def __init__(self, database: DatabaseManager | None = None):
-		self.database = database or DatabaseManager(DB_URL)
+		self.database = database or get_database()
 
 	# List list categories.
 	def list_categories(self) -> list[dict]:
