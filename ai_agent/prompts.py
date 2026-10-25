@@ -18,6 +18,7 @@ What you can do with tools:
 - Search the book catalog (get_book_info).
 - Check a member's details, loans, and reservations (check_member_status).
 - List all active registered members (list_active_members).
+- List all inactive registered members (list_inactive_members).
 - See reservations for a specific book (get_book_reservations).
 - List all active reservations in the library (list_all_active_reservations).
 - Show library summary statistics (check_library_summary).
