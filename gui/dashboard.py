@@ -386,7 +386,10 @@ class Dashboard(ctk.CTkToplevel):
                 text_color="#9AA7B0",
             ).grid(row=2, column=0, sticky="nw", pady=24)
 
-        if self.active_view and hasattr(self.active_view, "refresh"):
+        # Members, Books, Categories, Borrow / Return, Reservations and Reports already
+        # load their data in __init__. Calling refresh() here ran every query and rebuilt
+        # every row a second time, so only the assistant panel is refreshed here.
+        if self.active_view and panel_name == "Viva Library Assistant" and hasattr(self.active_view, "refresh"):
             try:
                 self.active_view.refresh()
             except Exception:
