@@ -1,13 +1,13 @@
 # Book catalog business logic.
 
-from config import DB_URL
 from database.db_manager import DatabaseManager
+from database.shared import get_database
 
 
 class BookManager:
 	# Initialize the component.
 	def __init__(self, database: DatabaseManager | None = None):
-		self.database = database or DatabaseManager(DB_URL)
+		self.database = database or get_database()
 
 	# List list books.
 	def list_books(self) -> list[dict]:
@@ -15,6 +15,11 @@ class BookManager:
 			"SELECT books.*, categories.name AS category_name FROM books "
 			"LEFT JOIN categories ON categories.id = books.category_id ORDER BY books.title"
 		)
+
+	# Get the price of a single book.
+	def get_price(self, isbn: str):
+		row = self.database.fetch_one("SELECT price FROM books WHERE isbn = :isbn", {"isbn": isbn})
+		return row["price"] if row else None
 
 	# Search search.
 	def search(self, query: str = "") -> list[dict]:
