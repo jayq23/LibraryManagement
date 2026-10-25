@@ -1,13 +1,13 @@
 # Summary and report generation.
 
-from config import DB_URL
 from database.db_manager import DatabaseManager
+from database.shared import get_database
 
 
 class ReportManager:
     # Initialize the component.
     def __init__(self, database: DatabaseManager | None = None):
-        self.database = database or DatabaseManager(DB_URL)
+        self.database = database or get_database()
 
     # Handle summary.
     def summary(self) -> dict[str, int | float]:
