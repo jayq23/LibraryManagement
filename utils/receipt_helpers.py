@@ -7,15 +7,12 @@ from models.invoice import Invoice
 from utils.receipt_modal import ReceiptModal
 
 
-# Retrieve get book price.
+# Retrieve get book price (one small query instead of loading every book).
 def get_book_price(isbn: str) -> Decimal:
-    for book in BookManager().list_books():
-        if book["isbn"] == isbn:
-            try:
-                return Decimal(str(book.get("price") or "0.00"))
-            except InvalidOperation:
-                return Decimal("0.00")
-    return Decimal("0.00")
+    try:
+        return Decimal(str(BookManager().get_price(isbn) or "0.00"))
+    except InvalidOperation:
+        return Decimal("0.00")
 
 
 # Show show receipt.
