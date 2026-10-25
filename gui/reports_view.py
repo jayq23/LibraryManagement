@@ -1,4 +1,4 @@
-# Reports screen with smooth refresh and scrollable fines list.
+# Reports screen with smooth refresh and scrollable, paginated fines list.
 
 from decimal import Decimal, InvalidOperation
 
@@ -7,6 +7,7 @@ import customtkinter as ctk
 from managers.report_manager import ReportManager
 from managers.fine_manager import FineManager
 from utils.helpers import enable_mousewheel
+from utils.pager import Pager
 
 
 # Handle format peso.
@@ -18,9 +19,13 @@ def format_peso(amount) -> str:
 
 
 class ReportsView(ctk.CTkFrame):
+    PAGE_SIZE = 10  # Fine rows built per page.
+
     # Initialize the component.
     def __init__(self, master):
         super().__init__(master, fg_color="transparent")
+
+        self._fines: list[dict] = []
 
         # Top Summary Panel
         self.panel = ctk.CTkFrame(self, fg_color="#1B252E", border_color="#303D47", border_width=1, corner_radius=10)
@@ -41,12 +46,22 @@ class ReportsView(ctk.CTkFrame):
             font=ctk.CTkFont(size=15, weight="bold")
         ).pack(anchor="w", padx=18, pady=(14, 6))
 
+        # Page controls (packed before the list so they always stay visible at the bottom).
+        self.pager = Pager(fines_card, on_change=self._render_fines, page_size=self.PAGE_SIZE)
+        self.pager.pack(side="bottom", fill="x", padx=12, pady=(0, 10))
+
         # Scrollable area para sa Fines para hindi lumagpas sa screen
         self.fines_rows = ctk.CTkScrollableFrame(fines_card, fg_color="transparent")
         self.fines_rows.pack(fill="both", expand=True, padx=6, pady=(0, 6))
+        self.pager.scroll_target = self.fines_rows
         enable_mousewheel(self.fines_rows)
 
         self.refresh()
+
+    # Clear the fine rows currently on screen.
+    def _clear_fines(self):
+        for widget in self.fines_rows.winfo_children():
+            widget.destroy()
 
     # Refresh refresh.
     def refresh(self):
@@ -76,13 +91,23 @@ class ReportsView(ctk.CTkFrame):
         except Exception as error:
             ctk.CTkLabel(self.panel, text=f"Unable to load summary: {error}", text_color="#D17A67").pack(anchor="w", padx=18, pady=12)
 
-        # 2. Refresh Unpaid Fines List
-        for widget in self.fines_rows.winfo_children():
-            widget.destroy()
+        # 2. Reload the unpaid fines, then draw the current page
+        try:
+            self._fines = FineManager().list_unpaid()
+        except Exception as error:
+            self._fines = []
+            self._clear_fines()
+            ctk.CTkLabel(self.fines_rows, text=f"Unable to load fines: {error}", text_color="#D17A67").pack(anchor="w", padx=12, pady=12)
+            return
+
+        self._render_fines()
+
+    # Draw only the current page of unpaid fines.
+    def _render_fines(self):
+        self._clear_fines()
 
         try:
-            unpaid_fines = FineManager().list_unpaid()
-            for fine in unpaid_fines:
+            for fine in self.pager.slice(self._fines):
                 row = ctk.CTkFrame(self.fines_rows, fg_color="#202D37", corner_radius=7)
                 row.pack(fill="x", pady=4, padx=6)
 
@@ -105,7 +130,7 @@ class ReportsView(ctk.CTkFrame):
                     hover_color="#21817F"
                 ).pack(side="right", padx=10, pady=6)
 
-            if not unpaid_fines:
+            if not self._fines:
                 ctk.CTkLabel(self.fines_rows, text="No unpaid fines at this time.", text_color="#A6B1B8").pack(anchor="w", padx=12, pady=12)
 
         except Exception as error:
