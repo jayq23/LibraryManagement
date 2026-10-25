@@ -1,14 +1,17 @@
 # Conversation state and message history manager for GUI Chatbot.
 
 import logging
+import re
 import threading
 
 from ai_agent.agent import GroqAgent
 from ai_agent.receipts import ReceiptRequest, pop_receipts
+from ai_agent import tools
 
 logger = logging.getLogger(__name__)
 
 MAX_HISTORY_MESSAGES = 20  # only the most recent messages are sent to the model
+MEMBER_LIST_PATTERN = re.compile(r"\b(?P<status>inactive|active)\s+members?\b", re.IGNORECASE)
 
 
 class Chatbot:
@@ -39,7 +42,9 @@ class Chatbot:
             self.history.append({"role": "user", "content": user_message})
 
             try:
-                response = self.agent.generate_response(self._recent_messages())
+                response = self._direct_member_list_response(user_message)
+                if response is None:
+                    response = self.agent.generate_response(self._recent_messages())
             except Exception:
                 logger.exception("AI request failed")
                 self.history.pop()  # don't leave an unanswered user message behind
@@ -49,6 +54,16 @@ class Chatbot:
             return response
         finally:
             self._lock.release()
+
+    @staticmethod
+    def _direct_member_list_response(prompt: str) -> str | None:
+        match = MEMBER_LIST_PATTERN.search(prompt)
+        if not match:
+            return None
+
+        if match.group("status").lower() == "inactive":
+            return tools.list_inactive_members()
+        return tools.list_active_members()
 
     # Handle pop receipts.
     def pop_receipts(self) -> list[ReceiptRequest]:
