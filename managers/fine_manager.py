@@ -4,8 +4,8 @@ from datetime import datetime, date
 from decimal import Decimal
 from zoneinfo import ZoneInfo  # Direct import lang dahil built-in na 'to sa Python 3.13
 
-from config import DB_URL
 from database.db_manager import DatabaseManager
+from database.shared import get_database
 
 
 class FineManager:
@@ -13,7 +13,7 @@ class FineManager:
 
     # Initialize the component.
     def __init__(self, database: DatabaseManager | None = None, daily_rate: Decimal = Decimal("10.00")):
-        self.database = database or DatabaseManager(DB_URL)
+        self.database = database or get_database()
         self.daily_rate = daily_rate  # Flat ₱10 per day late fee
 
     @classmethod
@@ -36,27 +36,16 @@ class FineManager:
     def calculate_for_book(self, price: Decimal, due_date: date, as_of: date | None = None) -> Decimal:
         return self.calculate(due_date, as_of).quantize(Decimal("0.01"))
 
-    # Handle sync overdue fines.
+    # Sync fines for every overdue loan with one SQL statement instead of one query per loan.
     def sync_overdue_fines(self) -> None:
-        ph_today = self.get_ph_today()
-        loans = self.database.fetch_all(
-            "SELECT loans.id, loans.member_id, loans.due_date, books.price FROM loans "
-            "JOIN books USING (isbn) WHERE loans.due_date < :ph_today AND loans.returned_on IS NULL",
-            {"ph_today": ph_today}
+        self.database.execute(
+            "INSERT INTO fines (member_id, loan_id, amount, reason) "
+            "SELECT loans.member_id, loans.id, "
+            "ROUND(CAST(:rate AS NUMERIC) * (CAST(:ph_today AS DATE) - loans.due_date), 2), 'Overdue item' "
+            "FROM loans WHERE loans.due_date < CAST(:ph_today AS DATE) AND loans.returned_on IS NULL "
+            "ON CONFLICT (loan_id) WHERE loan_id IS NOT NULL DO UPDATE SET amount = EXCLUDED.amount",
+            {"ph_today": self.get_ph_today(), "rate": self.daily_rate},
         )
-        for loan in loans:
-            amount = self.calculate(loan["due_date"], as_of=ph_today).quantize(Decimal("0.01"))
-            if amount > 0:
-                self.database.execute(
-                    "INSERT INTO fines (member_id, loan_id, amount, reason) VALUES (:member_id, :loan_id, :amount, :reason) "
-                    "ON CONFLICT (loan_id) WHERE loan_id IS NOT NULL DO UPDATE SET amount = EXCLUDED.amount",
-                    {
-                        "member_id": loan["member_id"],
-                        "loan_id": loan["id"],
-                        "amount": amount,
-                        "reason": "Overdue item",
-                    },
-                )
 
     # List list unpaid.
     def list_unpaid(self) -> list[dict]:
